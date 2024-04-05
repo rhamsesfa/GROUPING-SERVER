@@ -20,12 +20,12 @@ app.use((req, res, next) => {
     next();
   });
 
-mongoose.connect("mongodb+srv://chronicklmali:jVByDuAGkS3Ybsdn@cluster0.f1nhqgj.mongodb.net/okira?retryWrites=true&w=majority",
+mongoose.connect("mongodb+srv://fideleNdzime:K5kTxlDbjQl8k7yt@cluster0.rb7vp80.mongodb.net/grouping?retryWrites=true&w=majority",
 
   { useNewUrlParser: true,
     useUnifiedTopology: true, autoIndex: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
-  .catch(() => console.log('Connexion à MongoDB échouée !'));
+  .catch((err) => console.log('Connexion à MongoDB échouée !', err));
 
 
 

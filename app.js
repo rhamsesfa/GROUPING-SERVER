@@ -28,5 +28,8 @@ mongoose.connect("mongodb+srv://fideleNdzime:K5kTxlDbjQl8k7yt@cluster0.rb7vp80.m
   .catch((err) => console.log('Connexion à MongoDB échouée !', err));
 
 
+const cityRouter = require("./routes/City");
+
+app.use("/api/city", cityRouter); 
 
 module.exports = app;

@@ -17,3 +17,17 @@ exports.addCity = (req, res) => {
         res.status(505).json({err})
     })
 }
+
+
+exports.getCities = (req, res) => {
+  
+    City.find().then((cities) => {
+      
+      res.status(200).json({status: 0, cities});
+      
+        
+    }, (err) => {
+      
+        res.status(505).json({err})
+    })
+}

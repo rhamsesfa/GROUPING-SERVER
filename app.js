@@ -29,7 +29,10 @@ mongoose.connect("mongodb+srv://fideleNdzime:K5kTxlDbjQl8k7yt@cluster0.rb7vp80.m
 
 
 const cityRouter = require("./routes/City");
+const userRouter = require("./routes/User");
+
 
 app.use("/api/city", cityRouter); 
+app.use("")
 
 module.exports = app;

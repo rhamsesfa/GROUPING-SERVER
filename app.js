@@ -33,6 +33,6 @@ const userRouter = require("./routes/User");
 
 
 app.use("/api/city", cityRouter); 
-app.use("")
+app.use("/api/user", userRouter);
 
 module.exports = app;

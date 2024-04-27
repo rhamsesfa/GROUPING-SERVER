@@ -8,7 +8,7 @@ const userCtrl = require("../controllers/User");
 
 //router.get("/adduser", userCtrl.SignUp);
 
-
+router.post("/adduser", userCtrl.Register); 
 
 
 

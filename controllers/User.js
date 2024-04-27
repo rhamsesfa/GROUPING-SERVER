@@ -6,7 +6,6 @@ const jwt = require("jsonwebtoken");
 exports.signUp = (req, res) => {
   
   
-  
   User.findOne({phone: req.body.email}).then((user) => {
     
     if(user){

@@ -6,7 +6,9 @@ const router = express.Router();
 const userCtrl = require("../controllers/User"); 
 
 
-router.get("/adduser", userCtrl.SignUp);
+//router.get("/adduser", userCtrl.SignUp);
+
+
 
 
 

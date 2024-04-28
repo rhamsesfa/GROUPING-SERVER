@@ -6,4 +6,6 @@ const countryCtrl = require("../controllers/Country");
 
 //router.post("addcountry", countryCtrl.addCounrty); 
 
+router.post("/addcountry", countryCtrl.addC); 
+
 module.exports = router;

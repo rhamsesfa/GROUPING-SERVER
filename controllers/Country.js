@@ -32,3 +32,15 @@ exports.addC = (req, res) => {
     }
   );
 }
+
+exports.getCountries = (req, res) => {
+  
+    Country.find().then((countries) => {
+      
+      res.status(200).json({countries, status: 0})
+        
+    }, (err) => {
+      
+        res.status(500).json({err})
+    })
+}

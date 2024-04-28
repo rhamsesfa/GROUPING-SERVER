@@ -7,6 +7,6 @@ const cityCtrl = require("../controllers/City");
 
 router.post("/addcity", cityCtrl.addCity);
 router.get("/getcities", cityCtrl.getCities);
-router.post("getcitiesbycountryid", cityCtrl.getCitiesByCountryId)
+router.post("/getcitiesbycountryid", cityCtrl.getCitiesByCountryId)
 
 module.exports = router;

@@ -31,3 +31,15 @@ exports.getCities = (req, res) => {
         res.status(505).json({err})
     })
 }
+
+exports.getCitiesByCountryId = (req, res) => {
+  
+    City.find({country_id: req.body._id}).then((cities) => {
+      
+       res.status(200).json({status: 0, cities});
+        
+    }, (err) => {
+      
+        res.status(505).json({err})
+    })
+}

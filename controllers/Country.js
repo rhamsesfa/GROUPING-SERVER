@@ -35,7 +35,11 @@ exports.addC = (req, res) => {
 
 exports.getCountries = (req, res) => {
   
+  console.log(req.body);
+  
     Country.find().then((countries) => {
+
+      console.log(countries);
       
       res.status(200).json({countries, status: 0})
         

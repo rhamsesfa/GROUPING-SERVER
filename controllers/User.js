@@ -1,11 +1,14 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const sendEmail = require("./sendEmail"); 
+const sendEmail = require("./Email"); 
 
 
 
 exports.Register = (req, res) => {
+  
+  console.log(req.body)
+  
   User.findOne({ phone: req.body.phone }).then(
     (user) => {
       if (user) {
@@ -20,10 +23,12 @@ exports.Register = (req, res) => {
               date: new Date(),
             });
 
-            const _id = await newUser.save().then((uss) => {
+            const _id = await newUser.save().then(async (uss) => {
               return uss._id;
             });
 
+           const emailReturn = await sendEmail(req.body.email);
+            
             res.status(201).json({
               status: 0,
               message: "Utilisateur ajouté avec succès",
@@ -34,6 +39,7 @@ exports.Register = (req, res) => {
             });
           },
           (err) => {
+            console.log(err);
             res.status(505).json({ err });
           }
         );
@@ -68,7 +74,7 @@ exports.signUp = (req, res) => {
               return uss._id;
             });
             
-            await sendEmail(req.body.email);
+       
 
             res.status(201).json({
               status: 0,

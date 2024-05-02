@@ -22,7 +22,7 @@ const nodemailer = require('nodemailer');
     ciphers: "SSLv3"
   },
   auth: {
-    user: 'fidele.ndzime@outlook.fr',
+    user: 'fidele.ndzime@outlook.com',
     //pass: 'rwhpljusybnoqzog'
     //gmail jcfbbzobraalhbmn
     pass: "Fidele@1989"
@@ -34,7 +34,7 @@ const nodemailer = require('nodemailer');
   
   
   const mailOptions = {
-  from: 'fidele.ndzime@outlook.fr',
+  from: 'fidele.ndzime@outlook.com',
   to: email,
   subject: 'Grouping: Validation d\'adresse email',
   html: `

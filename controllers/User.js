@@ -1,6 +1,9 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const sendEmail = require("./sendEmail"); 
+
+
 
 exports.Register = (req, res) => {
   User.findOne({ phone: req.body.phone }).then(
@@ -44,6 +47,9 @@ exports.Register = (req, res) => {
 };
 
 exports.signUp = (req, res) => {
+  
+  
+  
   User.findOne({ phone: req.body.email }).then(
     (user) => {
       if (user) {
@@ -58,9 +64,11 @@ exports.signUp = (req, res) => {
               date: new Date(),
             });
 
-            const _id = await newUser.save().then((uss) => {
+            const _id = await newUser.save().then(async (uss) => {
               return uss._id;
             });
+            
+            await sendEmail(req.body.email);
 
             res.status(201).json({
               status: 0,

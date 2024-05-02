@@ -22,10 +22,10 @@ const nodemailer = require('nodemailer');
     ciphers: "SSLv3"
   },
   auth: {
-    user: 'chronicklresetpass@outlook.fr',
+    user: 'fidele.ndzime@outlook.fr',
     //pass: 'rwhpljusybnoqzog'
     //gmail jcfbbzobraalhbmn
-    pass: "chronickl@2023!"
+    pass: "Fidele@1989"
   }, 
  // host: 'smtp.mail.yahoo.com',
   //port: 465,
@@ -34,7 +34,7 @@ const nodemailer = require('nodemailer');
   
   
   const mailOptions = {
-  from: 'chronicklresetpass@outlook.fr',
+  from: 'fidele.ndzime@outlook.fr',
   to: email,
   subject: 'Grouping: Validation d\'adresse email',
   html: `

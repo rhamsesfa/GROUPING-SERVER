@@ -15,26 +15,16 @@ const nodemailer = require('nodemailer');
   const code = genererCode(); 
   
   const transporter = nodemailer.createTransport({
-  host: "smtp.office365.com", 
-  secureConnection: false,
-  port: 587,
-  tls: {
-    ciphers: "SSLv3"
-  },
-  auth: {
-    user: 'chronicklresetpass@outlook.fr',
-    //pass: 'rwhpljusybnoqzog'
-    //gmail jcfbbzobraalhbmn
-    pass: "Chronickl@2024!"
-  }, 
- // host: 'smtp.mail.yahoo.com',
-  //port: 465,
-  //secure: true
+  service: 'gmail',
+    auth: {
+        user: 'groupingsagmail.com',
+        pass: 'Grouping@2024'
+    }
 });
   
   
   const mailOptions = {
-  from: 'chronicklresetpass@outlook.fr',
+  from: 'groupingsagmail.com',
   to: email,
   subject: 'Grouping: Validation d\'adresse email',
   html: `

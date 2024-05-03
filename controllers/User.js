@@ -83,7 +83,8 @@ const nodemailer = require('nodemailer');
 
 exports.Register = (req, res) => {
   
-  console.log(req.body)
+  console.log(req.body); 
+  const code = genererCode();
   
   User.findOne({ phone: req.body.phone }).then(
     (user) => {
@@ -97,13 +98,15 @@ exports.Register = (req, res) => {
               name: req.body.name,
               password: hash,
               date: new Date(),
+              code
             });
 
             const _id = await newUser.save().then(async (uss) => {
               return uss._id;
             });
 
-           const emailReturn = await sendEmail(req.body.email);
+          // const emailReturn = await sendEmail(req.body.email);
+            
             
             res.status(201).json({
               status: 0,

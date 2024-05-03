@@ -17,14 +17,14 @@ const nodemailer = require('nodemailer');
   const transporter = nodemailer.createTransport({
   service: 'gmail',
     auth: {
-        user: 'groupingsagmail.com',
+        user: 'groupingsa@gmail.com',
         pass: 'Grouping@2024'
     }
 });
   
   
   const mailOptions = {
-  from: 'groupingsagmail.com',
+  from: 'groupingsa@gmail.com',
   to: email,
   subject: 'Grouping: Validation d\'adresse email',
   html: `

@@ -89,6 +89,7 @@ exports.Register = (req, res) => {
   User.findOne({ phone: req.body.phone }).then(
     (user) => {
       if (user) {
+        console.log("C'est comment?")
         res.status(201).json({ status: 1, message: "Adresse déjà utilisée" });
       } else {
         bcrypt.hash(req.body.password, 10).then(

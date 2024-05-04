@@ -90,39 +90,18 @@ exports.Register = (req, res) => {
     (user) => {
       if (user) {
      
-        res.status(201).json({ status: 1, message: "Adresse déjà utilisée", code: code });
+        res.status(201).json({ status: 1, message: "Adresse déjà utilisée"});
+      
       } else {
-        bcrypt.hash(req.body.password, 10).then(
-          async (hash) => {
-            const newUser = User({
-              email: req.body.email,
-              name: req.body.name,
-              password: hash,
-              date: new Date(),
-              code
-            });
 
-            const _id = await newUser.save().then(async (uss) => {
-              return uss._id;
-            });
-
-          // const emailReturn = await sendEmail(req.body.email);
-            
             
             res.status(201).json({
               status: 0,
               message: "Utilisateur ajouté avec succès",
-              token: jwt.sign(
-                { userId: _id },
-                "JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb"
-              ),
+              code
+           
             });
-          },
-          (err) => {
-            console.log(err);
-            res.status(505).json({ err });
-          }
-        );
+       
       }
     },
     (err) => {
@@ -131,6 +110,7 @@ exports.Register = (req, res) => {
     }
   );
 };
+
 
 exports.signUp = (req, res) => {
   

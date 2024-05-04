@@ -97,7 +97,7 @@ exports.Register = (req, res) => {
             
             res.status(201).json({
               status: 0,
-              message: "Utilisateur ajouté avec succès",
+              message: "Email clean",
               code
            
             });

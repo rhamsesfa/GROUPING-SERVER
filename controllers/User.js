@@ -86,8 +86,9 @@ exports.Register = (req, res) => {
   console.log(req.body); 
   const code = genererCode();
   
-  User.findOne({ phone: req.body.phone }).then(
+  User.findOne({ email: req.body.email }).then(
     (user) => {
+      
       if (user) {
      
         res.status(201).json({ status: 1, message: "Adresse déjà utilisée"});

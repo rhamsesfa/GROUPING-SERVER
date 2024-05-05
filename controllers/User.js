@@ -80,6 +80,50 @@ const nodemailer = require('nodemailer');
   
   
 }
+ 
+exports.signUpp = (req, res) => {
+  
+    
+    User.findOne({email: req.body.email}).then((user) => {
+      
+          if(user) {
+            
+              res.status(201).json({ status: 1, message: "Adresse déjà utilisée"});
+              
+          }else{
+            
+                    bcrypt.hash(req.body.password, 10).then(
+          async (hash) => {
+            const newUser = User({
+              email: req.body.email,
+              name: req.body.name,
+              password: hash,
+              date: new Date(),
+            });
+
+            const _id = await newUser.save().then(async (uss) => {
+              return uss._id;
+            });
+            
+       
+
+            res.status(201).json({
+              status: 0,
+              message: "Utilisateur ajouté avec succès",
+              token: jwt.sign(
+                { userId: _id },
+                "JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb"
+              ),
+            });
+          },
+          (err) => {
+            res.status(505).json({ err });
+          }
+        );
+              
+          }
+    })
+}
 
 exports.Register = (req, res) => {
   

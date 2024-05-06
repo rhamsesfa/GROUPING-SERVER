@@ -81,6 +81,66 @@ const nodemailer = require('nodemailer');
   
 }
  
+ exports.signInWithGoogle = (req, res) => {
+   
+     User.findOne({
+       email: req.body.email
+     }).then((user) => {
+       
+       if(user){
+         
+         
+       }else{
+         
+        bcrypt.hash(req.body.password, 10).then(
+          async (hash) => {
+            const newUser = User({
+              email: req.body.email,
+              name: req.body.name,
+              password: hash,
+              date: new Date(),
+              photo: req.body.photo
+            });
+
+            const _id = await newUser.save().then(async (uss) => {
+              return uss._id;
+            });
+            
+       
+            User.findOne({_id}).then((use) => {
+              
+              delete use._id
+              
+              res.status(201).json({
+              status: 0,
+              user: use,
+              message: "Utilisateur ajouté avec succès",
+              token: jwt.sign(
+                { userId: _id },
+                "JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb"
+              ),
+            });
+                
+            }, (err) => {
+              
+                res.status(505).json({ err });
+            })
+
+
+          },
+          (err) => {
+            res.status(505).json({ err });
+          }
+        );
+           
+       }
+         
+     }, (err) => {
+       
+         res.status(505).json({err})
+     })
+ }
+ 
 exports.signUpp = (req, res) => {
   
     
@@ -92,7 +152,7 @@ exports.signUpp = (req, res) => {
               
           }else{
             
-                    bcrypt.hash(req.body.password, 10).then(
+        bcrypt.hash(req.body.password, 10).then(
           async (hash) => {
             const newUser = User({
               email: req.body.email,
@@ -106,15 +166,25 @@ exports.signUpp = (req, res) => {
             });
             
        
-
-            res.status(201).json({
+            User.findOne({_id}).then((use) => {
+              
+              delete use._id
+              
+              res.status(201).json({
               status: 0,
+              user: use,
               message: "Utilisateur ajouté avec succès",
               token: jwt.sign(
                 { userId: _id },
                 "JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb"
               ),
             });
+                
+            }, (err) => {
+              
+                res.status(505).json({ err });
+            })
+
           },
           (err) => {
             res.status(505).json({ err });

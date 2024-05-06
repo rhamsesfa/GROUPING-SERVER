@@ -89,6 +89,17 @@ const nodemailer = require('nodemailer');
        
        if(user){
          
+              delete user._id
+              
+              res.status(201).json({
+              status: 0,
+              user: user,
+              message: "Utilisateur ajouté avec succès",
+              token: jwt.sign(
+                { userId: user._id },
+                "JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb"
+              ),
+            });
          
        }else{
          

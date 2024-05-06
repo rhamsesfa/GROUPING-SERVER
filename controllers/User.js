@@ -92,7 +92,7 @@ const nodemailer = require('nodemailer');
               delete user._id
               
               res.status(201).json({
-              status: 0,
+              status: 1,
               user: user,
               message: "Utilisateur ajouté avec succès",
               token: jwt.sign(

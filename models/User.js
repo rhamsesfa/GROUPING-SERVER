@@ -7,7 +7,8 @@ const userSchema = mongoose.Schema({
     password: {type: String},
     code: {type: String}, 
     date: {type: Date}, 
-    active: {type: Boolean}
+    active: {type: Boolean}, 
+    photo: {type: String}
   
 })
 

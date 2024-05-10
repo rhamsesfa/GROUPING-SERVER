@@ -11,7 +11,7 @@ const userCtrl = require("../controllers/User");
 router.post("/adduser", userCtrl.Register); 
 router.post("/register", userCtrl.signUpp);
 router.post("/signinwithgoogle", userCtrl.signInWithGoogle); 
-
+router.post("/appleinfo", userCtrl.appleInfo);
 
 
 module.exports = router;

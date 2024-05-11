@@ -289,11 +289,27 @@ exports.SignIn = (req, res) => {
       
       if(!user){
         
-        res.status(200).json({status: 1, message: "Utilisateur ou mot de passe incorrect"})
+        res.status(200).json({status: 1, message: "Utilisateur et/ou mot de passe incorrect"})
           
       }else{
           
-        
+        bcrypt.compare(req.body.password, user.password).then((valid) => {
+          
+          if(!valid){
+              
+              res.status(200).json({status: 1, message: "Utilisateur et/ou mot de passe incorrect"})
+              
+          }else{
+            
+            
+              
+          }
+            
+        }, (err) => {
+          
+            console.log(err); 
+            res.status(505).json({err})
+        })
           
       }
         

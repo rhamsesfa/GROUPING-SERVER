@@ -283,7 +283,7 @@ exports.signUp = (req, res) => {
   );
 };
 
-exports.SignIn = (req, res) => {
+exports.signIn = (req, res) => {
   
     User.findOne({email: req.body.email}).then((user) => {
       
@@ -301,9 +301,14 @@ exports.SignIn = (req, res) => {
               
           }else{
             
+            const _id = user._id; 
+            
             delete user._id; 
             
-            res.status(200).json({status: 0, })
+            res.status(200).json({status: 0, user,token: jwt.sign(
+                { userId: _id },
+                "JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb"
+              ), })
             
               
           }

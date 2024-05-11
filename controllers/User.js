@@ -283,6 +283,19 @@ exports.signUp = (req, res) => {
   );
 };
 
+exports.SignIn = (req, res) => {
+  
+    User.findOne({email: req.body.email}).then((user) => {
+      
+      
+        
+    }, (err) => {
+      
+        console.log(err); 
+      res.status(505).json({err})
+    })
+}
+
 
 exports.appleInfo = (req, res) => {
   

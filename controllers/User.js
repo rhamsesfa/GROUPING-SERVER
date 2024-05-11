@@ -287,7 +287,15 @@ exports.SignIn = (req, res) => {
   
     User.findOne({email: req.body.email}).then((user) => {
       
-      
+      if(!user){
+        
+        res.status(200).json({status: 1, message: "Utilisateur ou mot de passe incorrect"})
+          
+      }else{
+          
+        
+          
+      }
         
     }, (err) => {
       

@@ -301,6 +301,9 @@ exports.SignIn = (req, res) => {
               
           }else{
             
+            delete user._id; 
+            
+            res.status(200).json({status: 0, })
             
               
           }

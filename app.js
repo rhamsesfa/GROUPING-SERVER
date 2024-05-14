@@ -36,5 +36,7 @@ const countryRouter = require("./routes/Country");
 app.use("/api/country", countryRouter)
 app.use("/api/city", cityRouter); 
 app.use("/api/user", userRouter);
+app.use('/pdf_documents', express.static(path.join(__dirname, 'pdf_documents')));
+app.use("/images", express.static(path.join(__dirname, "images")));
 
 module.exports = app;

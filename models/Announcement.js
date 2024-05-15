@@ -10,6 +10,7 @@ const AnnouncementSchema = mongoose.Schema({
     company: {type: String}, 
     description: {type: String}, 
     userId: {type: String}, 
+    draft: {type: Array},
     status: {type: String}, 
     date: {type: Date}, 
     active: {type: Boolean}

@@ -3,7 +3,9 @@ const Announcement = require("../models/Announcement");
 
 exports.addAnnouncement = (req, res) => {
   
-    const announcement = new Announcement({
+  if(req.body.status === "kilos"){
+    
+        const announcement = new Announcement({
         startCity: req.body.startCity, 
         endCity: req.body.endCity, 
         dateOfDeparture: req.body.date, 
@@ -26,4 +28,12 @@ exports.addAnnouncement = (req, res) => {
         console.log(err); 
       res.status(505).json({err})
     })
+    
+    
+  }else{
+    
+    
+  }
+  
+
 }

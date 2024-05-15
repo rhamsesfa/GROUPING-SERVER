@@ -31,6 +31,7 @@ mongoose.connect("mongodb+srv://fideleNdzime:K5kTxlDbjQl8k7yt@cluster0.rb7vp80.m
 const cityRouter = require("./routes/City");
 const userRouter = require("./routes/User");
 const countryRouter = require("./routes/Country"); 
+const announcementRouter = require("./routes/Announcement"); 
 
 
 app.use("/api/country", countryRouter)
@@ -38,5 +39,6 @@ app.use("/api/city", cityRouter);
 app.use("/api/user", userRouter);
 app.use('/pdf_documents', express.static(path.join(__dirname, 'pdf_documents')));
 app.use("/images", express.static(path.join(__dirname, "images")));
+app.use("/api/annonce", announcementRouter);
 
 module.exports = app;

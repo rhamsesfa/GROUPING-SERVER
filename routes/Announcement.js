@@ -10,3 +10,5 @@ router.post("/addannouncement", auth, announcementCtrl.addAnnouncement);
 
 module.exports = router; 
 
+
+

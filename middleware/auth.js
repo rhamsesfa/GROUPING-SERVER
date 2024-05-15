@@ -27,7 +27,7 @@ module.exports = (req, res, next) => {
           }).then((user) => {
             
             
-            if(user){
+            if(user && user.active){
               
                 console.log("c'est ici");
               

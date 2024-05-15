@@ -26,8 +26,9 @@ module.exports = (req, res, next) => {
           
           }).then((user) => {
             
+            console.log("ici meme");
             
-            if(user && user.active){
+            if(user){
               
                 console.log("c'est ici");
               

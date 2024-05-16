@@ -1,9 +1,18 @@
 const Announcement = require("../models/Announcement"); 
 
 
-exports.addAnnouncement = (req, res) => {
+exports.addAnnouncementWithPdf = (req, res) => {
   
-    
+      console.log(req.file); 
+      console.log(req.body); 
+  
+}
+
+
+exports.addAnnouncementWithImages = (req, res) => {
+  
+      console.log(req.file); 
+      console.log(req.body); 
 }
 
 

@@ -6,6 +6,7 @@ exports.addAnnouncement = (req, res) => {
   if(req.body.status === "kilos"){
     
         const announcement = new Announcement({
+       
         startCity: req.body.startCity, 
         endCity: req.body.endCity, 
         dateOfDeparture: req.body.date, 
@@ -17,6 +18,7 @@ exports.addAnnouncement = (req, res) => {
         status: req.body.status, 
         date: new Date(), 
         active: false
+        
     })
     
     announcement.save().then(() => {
@@ -31,6 +33,7 @@ exports.addAnnouncement = (req, res) => {
     
     
   }else{
+    
     
     
   }

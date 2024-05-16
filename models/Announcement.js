@@ -9,6 +9,7 @@ const AnnouncementSchema = mongoose.Schema({
     kiloPrice: {type : Number}, 
     company: {type: String}, 
     description: {type: String}, 
+    pieds: {type: Number},
     userId: {type: String}, 
     draft: {type: Array},
     status: {type: String}, 

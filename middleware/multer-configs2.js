@@ -3,6 +3,7 @@ const multer = require("multer");
 try{
   
   
+  
 const MIME_TYPES = {
   "image/jpg" : "jpg", 
   "image/jpeg" : "jpeg", 

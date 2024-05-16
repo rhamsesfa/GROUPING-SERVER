@@ -3,6 +3,13 @@ const Announcement = require("../models/Announcement");
 
 exports.addAnnouncement = (req, res) => {
   
+    
+}
+
+
+
+exports.addAnnouncement = (req, res) => {
+  
   if(req.body.status === "kilos"){
     
         const announcement = new Announcement({

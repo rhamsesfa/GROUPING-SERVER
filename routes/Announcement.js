@@ -6,6 +6,7 @@ const announcementCtrl = require("../controllers/Announcement");
 
 const auth = require("../middleware/auth"); 
 
+
 router.post("/addannouncement", auth, announcementCtrl.addAnnouncement); 
 
 module.exports = router; 

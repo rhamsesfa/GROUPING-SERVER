@@ -131,3 +131,12 @@ exports.getAnnouncementsById = (req, res) => {
   })
     
 }
+
+exports.getAnnonces = (req, res) => {
+  
+    Announcement.aggregate([
+      {
+       $skip: req.body.startAt ? req.body.startAt : 0
+      }
+    ])
+}

@@ -117,3 +117,9 @@ exports.addAnnouncement = (req, res) => {
   
 
 }
+
+exports.getAnnoucementById = (req, res) => {
+  
+  
+    
+}

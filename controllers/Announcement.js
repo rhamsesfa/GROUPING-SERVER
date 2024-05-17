@@ -1,5 +1,5 @@
 const Announcement = require("../models/Announcement"); 
-
+const City = require("../models/City");
 
 exports.addAnnouncementWithPdf = (req, res) => {
   
@@ -134,9 +134,12 @@ exports.getAnnouncementsById = (req, res) => {
 
 exports.getAnnonces = (req, res) => {
   
-    Announcement.aggregate([
-      {
-       $skip: req.body.startAt ? req.body.startAt : 0
-      }
-    ])
+    Announcement.find({active: true, status: "container"}).sort({date: -1}).limit(5).then(async (containers) => {
+      
+          for(let container of containers) {
+            
+              container.startCity2 = await City.findOne({name: container.startCity }); 
+              container.endCity2 =  await City.findOne({name: container.endCity })
+          }
+    })
 }

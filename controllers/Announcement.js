@@ -141,5 +141,10 @@ exports.getAnnonces = (req, res) => {
               container.startCity2 = await City.findOne({name: container.startCity }); 
               container.endCity2 =  await City.findOne({name: container.endCity })
           }
+    
+    
+    }, (err) => {
+      
+        res.status(500).json({err})
     })
 }

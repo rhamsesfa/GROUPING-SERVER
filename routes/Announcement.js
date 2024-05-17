@@ -11,6 +11,7 @@ const multer2 = require("../middleware/multer-configs2");
 router.post("/addannouncement", auth, multer, multer2, announcementCtrl.addAnnouncement); 
 router.post("/addannouncementwithpdf", auth, multer, announcementCtrl.addAnnouncementWithPdf);
 router.post("/addannouncementwithImages", auth, multer2, announcementCtrl.addAnnouncementWithImages)
+router.get("/getannouncementbyid", auth, announcementCtrl.getAnnouncementsById); 
 
 module.exports = router; 
 

@@ -118,8 +118,16 @@ exports.addAnnouncement = (req, res) => {
 
 }
 
-exports.getAnnoucementById = (req, res) => {
+exports.getAnnouncementsById = (req, res) => {
   
   
+  Announcement.find({userId: req.auth.userId, active: true}).then((annonces) => {
+    
+    res.status(200).json({annonces, status: 0}); 
+      
+  }, (err) => {
+    
+      res.status(500).json({err})
+  })
     
 }

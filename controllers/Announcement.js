@@ -44,7 +44,7 @@ exports.addAnnouncementWithImages = (req, res) => {
   
       for(let file of req.files){
         
-          draft.push(`${req.protocol}s://${req.get("host")}/pdf_documents/${file.filename}`)
+          draft.push(`${req.protocol}s://${req.get("host")}/images/${file.filename}`)
       }
   
        const announcement = new Announcement({

@@ -4,7 +4,7 @@ const Announcement = require("../models/Announcement");
 exports.addAnnouncementWithPdf = (req, res) => {
   
  
-      const draft = [`${req.protocol}s://${req.get("host")}/images/${req.file.filename}`]; 
+      const draft = [`${req.protocol}s://${req.get("host")}/pdf_documents/${req.file.filename}`]; 
   
        const announcement = new Announcement({
        
@@ -39,6 +39,40 @@ exports.addAnnouncementWithImages = (req, res) => {
   
       console.log(req.files); 
       console.log(req.body); 
+  
+      let draft = []; 
+  
+      for(let file of req.files){
+        
+          draft.push(`${req.protocol}s://${req.get("host")}/pdf_documents/${file.filename}`)
+      }
+  
+       const announcement = new Announcement({
+       
+        startCity: req.body.startCity, 
+        endCity: req.body.endCity, 
+        dateOfDeparture: req.body.date, 
+        draft,
+        pieds: req.body.pieds,
+        description: req.body.description, 
+        userId: req.auth.userId, 
+        status: "container", 
+        date: new Date(), 
+        active: false
+        
+    })
+       
+    announcement.save().then(() => {
+      
+      res.status(201).json({status: 0});
+        
+    }, (err) => {
+      
+        console.log(err); 
+      res.status(505).json({err})
+    })
+  
+      
 }
 
 

@@ -11,7 +11,7 @@ exports.addAnnouncementWithPdf = (req, res) => {
 
 exports.addAnnouncementWithImages = (req, res) => {
   
-      console.log(req.file); 
+      console.log(req.files); 
       console.log(req.body); 
 }
 

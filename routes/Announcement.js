@@ -12,7 +12,7 @@ router.post("/addannouncement", auth, multer, multer2, announcementCtrl.addAnnou
 router.post("/addannouncementwithpdf", auth, multer, announcementCtrl.addAnnouncementWithPdf);
 router.post("/addannouncementwithImages", auth, multer2, announcementCtrl.addAnnouncementWithImages)
 router.get("/getannouncementbyid", auth, announcementCtrl.getAnnouncementsById); 
-router.get("/announces", auth, announcementCtrl.getAnnounces)
+router.get("/announces", auth, announcementCtrl.getAnnonces);
 
 module.exports = router; 
 

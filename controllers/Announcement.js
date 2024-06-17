@@ -93,7 +93,7 @@ exports.addAnnouncement = (req, res) => {
         userId: req.auth.userId, 
         status: req.body.status, 
         date: new Date(), 
-        active: false
+        active: true
         
     })
     

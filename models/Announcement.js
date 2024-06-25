@@ -16,7 +16,8 @@ const AnnouncementSchema = mongoose.Schema({
     draft: {type: Array},
     status: {type: String}, 
     date: {type: Date}, 
-    active: {type: Boolean}, 
+    active: {type: Boolean},
+    priceKilo: {type: String, default: null} 
     
 })
 

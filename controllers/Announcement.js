@@ -150,7 +150,7 @@ exports.getAnnonces = (req, res) => {
               kilo.startCity2 = await City.findOne({name: kilo.startCity }); 
               kilo.endCity2 =  await City.findOne({name: kilo.endCity })
           }
-        
+          console.log(kilos)
           res.status(201).json({status: 0, kilos, containers});
         
           

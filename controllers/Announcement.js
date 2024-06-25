@@ -136,7 +136,7 @@ exports.getAnnonces = (req, res) => {
   
     Announcement.find({active: true, status: "container"}).sort({date: -1}).limit(6).then( (containers) => {
       
-      Announcement.find({active: true, status: "kilos"}).sort({date: -1}).limit().then(async (kilos) => {
+      Announcement.find({active: true, status: "kilos"}).sort({date: -1}).limit(6).then(async (kilos) => {
         
         
             for(let container of containers) {

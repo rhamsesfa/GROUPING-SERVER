@@ -89,7 +89,7 @@ const nodemailer = require('nodemailer');
        
        if(user){
          
-              delete user._id
+              //delete user._id
               
               res.status(201).json({
               status: 1,

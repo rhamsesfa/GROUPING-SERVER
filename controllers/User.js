@@ -87,7 +87,7 @@ exports.signInWithGoogle = (req, res) => {
         res.status(201).json({
           status: 1,
           user: user,
-          message: "Utilisateur ajouté avec succès",
+          message: "Utilisateur connecté avec succès",
           token: jwt.sign(
             { userId: user._id },
             "JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb"

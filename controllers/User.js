@@ -76,7 +76,7 @@ const sendEmail = (email) => {
 };
 
 exports.signInWithGoogle = (req, res) => {
-  console.log(req);
+  //console.log(req);
   User.findOne({
     email: req.body.email,
   }).then(

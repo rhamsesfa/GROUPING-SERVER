@@ -1,33 +1,31 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const nodemailer = require('nodemailer');
+const nodemailer = require("nodemailer");
 
- const  genererCode = () => {
-    var code = "";
-    for (var i = 0; i < 4; i++) {
-        code += Math.floor(Math.random() * 10); // Générer un chiffre aléatoire entre 0 et 9
-    }
-    return code;
-}
- const sendEmail = (email) => {
-  
-  const code = genererCode(); 
-  
+const genererCode = () => {
+  var code = "";
+  for (var i = 0; i < 4; i++) {
+    code += Math.floor(Math.random() * 10); // Générer un chiffre aléatoire entre 0 et 9
+  }
+  return code;
+};
+const sendEmail = (email) => {
+  const code = genererCode();
+
   const transporter = nodemailer.createTransport({
-  service: 'gmail',
+    service: "gmail",
     auth: {
-        user: 'groupingsa@gmail.com',
-        pass: 'Grouping@2024'
-    }
-});
-  
-  
+      user: "groupingsa@gmail.com",
+      pass: "Grouping@2024",
+    },
+  });
+
   const mailOptions = {
-  from: 'groupingsa@gmail.com',
-  to: email,
-  subject: 'Grouping: Validation d\'adresse email',
-  html: `
+    from: "groupingsa@gmail.com",
+    to: email,
+    subject: "Grouping: Validation d'adresse email",
+    html: `
     
     <html>  
        <head>
@@ -62,47 +60,40 @@ const nodemailer = require('nodemailer');
         </body>
     </html>
   
-  `
+  `,
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+
+      return false;
+    } else {
+      console.log("Email sent: " + info.response);
+      return true;
+    }
+  });
 };
-   
-          transporter.sendMail(mailOptions, function(error, info) {
-          if (error) {
-            console.log(error);
-            
-            return false
-           
-          } else {
-            console.log('Email sent: ' + info.response);
-           return true
-          }
+
+exports.signInWithGoogle = (req, res) => {
+  console.log(req);
+  User.findOne({
+    email: req.body.email,
+  }).then(
+    (user) => {
+      if (user) {
+        //delete user._id
+
+        res.status(201).json({
+          status: 1,
+          user: user,
+          message: "Utilisateur ajouté avec succès",
+          token: jwt.sign(
+            { userId: user._id },
+            "JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb"
+          ),
         });
-  
-  
-  
-}
- 
- exports.signInWithGoogle = (req, res) => {
-   
-     User.findOne({
-       email: req.body.email
-     }).then((user) => {
-       
-       if(user){
-         
-              //delete user._id
-              
-              res.status(201).json({
-              status: 1,
-              user: user,
-              message: "Utilisateur ajouté avec succès",
-              token: jwt.sign(
-                { userId: user._id },
-                "JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb"
-              ),
-            });
-         
-       }else{
-         
+      } else {
         bcrypt.hash(req.body.password, 10).then(
           async (hash) => {
             const newUser = User({
@@ -110,124 +101,103 @@ const nodemailer = require('nodemailer');
               name: req.body.name,
               password: hash,
               date: new Date(),
-              photo: req.body.photo
+              photo: req.body.photo,
             });
 
             const _id = await newUser.save().then(async (uss) => {
               return uss._id;
             });
-            
-       
-            User.findOne({_id}).then((use) => {
-              
-              delete use._id
-              
-              res.status(201).json({
-              status: 0,
-              user: use,
-              message: "Utilisateur ajouté avec succès",
-              token: jwt.sign(
-                { userId: _id },
-                "JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb"
-              ),
-            });
-                
-            }, (err) => {
-              
+
+            User.findOne({ _id }).then(
+              (use) => {
+                delete use._id;
+
+                res.status(201).json({
+                  status: 0,
+                  user: use,
+                  message: "Utilisateur ajouté avec succès",
+                  token: jwt.sign(
+                    { userId: _id },
+                    "JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb"
+                  ),
+                });
+              },
+              (err) => {
                 res.status(505).json({ err });
-            })
-
-
+              }
+            );
           },
           (err) => {
             res.status(505).json({ err });
           }
         );
-           
-       }
-         
-     }, (err) => {
-       
-         res.status(505).json({err})
-     })
- }
- 
+      }
+    },
+    (err) => {
+      res.status(505).json({ err });
+    }
+  );
+};
+
 exports.signUpp = (req, res) => {
-  
-    
-    User.findOne({email: req.body.email}).then((user) => {
-      
-          if(user) {
-            
-              res.status(201).json({ status: 1, message: "Adresse déjà utilisée"});
-              
-          }else{
-            
-        bcrypt.hash(req.body.password, 10).then(
-          async (hash) => {
-            const newUser = User({
-              email: req.body.email,
-              name: req.body.name,
-              password: hash,
-              date: new Date(),
-            });
+  User.findOne({ email: req.body.email }).then((user) => {
+    if (user) {
+      res.status(201).json({ status: 1, message: "Adresse déjà utilisée" });
+    } else {
+      bcrypt.hash(req.body.password, 10).then(
+        async (hash) => {
+          const newUser = User({
+            email: req.body.email,
+            name: req.body.name,
+            password: hash,
+            date: new Date(),
+          });
 
-            const _id = await newUser.save().then(async (uss) => {
-              return uss._id;
-            });
-            
-       
-            User.findOne({_id}).then((use) => {
-              
-              delete use._id
-              
+          const _id = await newUser.save().then(async (uss) => {
+            return uss._id;
+          });
+
+          User.findOne({ _id }).then(
+            (use) => {
+              delete use._id;
+
               res.status(201).json({
-              status: 0,
-              user: use,
-              message: "Utilisateur ajouté avec succès",
-              token: jwt.sign(
-                { userId: _id },
-                "JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb"
-              ),
-            });
-                
-            }, (err) => {
-              
-                res.status(505).json({ err });
-            })
-
-          },
-          (err) => {
-            res.status(505).json({ err });
-          }
-        );
-              
-          }
-    })
-}
+                status: 0,
+                user: use,
+                message: "Utilisateur ajouté avec succès",
+                token: jwt.sign(
+                  { userId: _id },
+                  "JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb"
+                ),
+              });
+            },
+            (err) => {
+              res.status(505).json({ err });
+            }
+          );
+        },
+        (err) => {
+          res.status(505).json({ err });
+        }
+      );
+    }
+  });
+};
 
 exports.Register = (req, res) => {
-  
-  console.log(req.body); 
+  console.log(req.body);
   const code = genererCode();
-  
+
   User.findOne({ email: req.body.email }).then(
     (user) => {
-      
       if (user) {
-     
-        res.status(201).json({ status: 1, message: "Adresse déjà utilisée"});
-      
+        res.status(201).json({ status: 1, message: "Adresse déjà utilisée" });
       } else {
-
-            
-            res.status(201).json({
-              status: 0,
-              message: "Email clean",
-              code
-           
-            });
-       
+        res.status(201).json({
+          status: 0,
+          message: "Email clean",
+          code,
+        });
       }
     },
     (err) => {
@@ -237,11 +207,7 @@ exports.Register = (req, res) => {
   );
 };
 
-
 exports.signUp = (req, res) => {
-  
-  
-  
   User.findOne({ phone: req.body.email }).then(
     (user) => {
       if (user) {
@@ -259,8 +225,6 @@ exports.signUp = (req, res) => {
             const _id = await newUser.save().then(async (uss) => {
               return uss._id;
             });
-            
-       
 
             res.status(201).json({
               status: 0,
@@ -284,53 +248,57 @@ exports.signUp = (req, res) => {
 };
 
 exports.signIn = (req, res) => {
-  
-    User.findOne({email: req.body.email}).then((user) => {
-      
-      if(!user){
-        
-        res.status(200).json({status: 1, message: "Utilisateur et/ou mot de passe incorrect"})
-          
-      }else{
-          
-        bcrypt.compare(req.body.password, user.password).then((valid) => {
-          
-          if(!valid){
-              
-              res.status(200).json({status: 1, message: "Utilisateur et/ou mot de passe incorrect"})
-              
-          }else{
-            
-            const _id = user._id; 
-            
-            delete user._id; 
-            
-            res.status(200).json({status: 0, user,token: jwt.sign(
-                { userId: _id },
-                "JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb"
-              ), })
-            
-              
-          }
-            
-        }, (err) => {
-          
-            console.log(err); 
-            res.status(505).json({err})
-        })
-          
-      }
-        
-    }, (err) => {
-      
-        console.log(err); 
-      res.status(505).json({err})
-    })
-}
+  User.findOne({ email: req.body.email }).then(
+    (user) => {
+      if (!user) {
+        res
+          .status(200)
+          .json({
+            status: 1,
+            message: "Utilisateur et/ou mot de passe incorrect",
+          });
+      } else {
+        bcrypt.compare(req.body.password, user.password).then(
+          (valid) => {
+            if (!valid) {
+              res
+                .status(200)
+                .json({
+                  status: 1,
+                  message: "Utilisateur et/ou mot de passe incorrect",
+                });
+            } else {
+              const _id = user._id;
 
+              delete user._id;
+
+              res
+                .status(200)
+                .json({
+                  status: 0,
+                  user,
+                  token: jwt.sign(
+                    { userId: _id },
+                    "JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb"
+                  ),
+                });
+            }
+          },
+          (err) => {
+            console.log(err);
+            res.status(505).json({ err });
+          }
+        );
+      }
+    },
+    (err) => {
+      console.log(err);
+      res.status(505).json({ err });
+    }
+  );
+};
 
 exports.appleInfo = (req, res) => {
-  
-    console.log(req.body); 
-    res.status(201).json({status: 0, message: "Thank You!"})
-}
+  console.log(req.body);
+  res.status(201).json({ status: 0, message: "Thank You!" });
+};

@@ -251,37 +251,31 @@ exports.signIn = (req, res) => {
   User.findOne({ email: req.body.email }).then(
     (user) => {
       if (!user) {
-        res
-          .status(200)
-          .json({
-            status: 1,
-            message: "Utilisateur et/ou mot de passe incorrect",
-          });
+        res.status(200).json({
+          status: 1,
+          message: "Utilisateur et/ou mot de passe incorrect",
+        });
       } else {
         bcrypt.compare(req.body.password, user.password).then(
           (valid) => {
             if (!valid) {
-              res
-                .status(200)
-                .json({
-                  status: 1,
-                  message: "Utilisateur et/ou mot de passe incorrect",
-                });
+              res.status(200).json({
+                status: 1,
+                message: "Utilisateur et/ou mot de passe incorrect",
+              });
             } else {
               const _id = user._id;
 
               delete user._id;
 
-              res
-                .status(200)
-                .json({
-                  status: 0,
-                  user,
-                  token: jwt.sign(
-                    { userId: _id },
-                    "JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb"
-                  ),
-                });
+              res.status(200).json({
+                status: 0,
+                user,
+                token: jwt.sign(
+                  { userId: _id },
+                  "JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb"
+                ),
+              });
             }
           },
           (err) => {

@@ -159,7 +159,7 @@ exports.signUpp = (req, res) => {
 
           User.findOne({ _id }).then(
             (use) => {
-              delete use._id;
+              delete use.password;
 
               res.status(201).json({
                 status: 0,

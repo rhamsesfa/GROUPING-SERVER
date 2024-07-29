@@ -79,7 +79,9 @@ exports.addAnnouncementWithImages = (req, res) => {
 
 exports.addAnnouncement = (req, res) => {
   
-  if(req.body.status === "kilos"){
+  if(req.body.status == "kilos"){
+    
+    console.log("la diez");
     
         const announcement = new Announcement({
        
@@ -87,7 +89,7 @@ exports.addAnnouncement = (req, res) => {
         endCity: req.body.endCity, 
         dateOfDeparture: req.body.date, 
         kilosCount: req.body.kilosCount, 
-        kilosPrice: req.body.kilosPrice, 
+        kiloPrice: req.body.kilosPrice, 
         company: req.body.company, 
         description: req.body.description, 
         userId: req.auth.userId, 
@@ -100,6 +102,7 @@ exports.addAnnouncement = (req, res) => {
     announcement.save().then(() => {
       
       res.status(201).json({status: 0});
+      
         
     }, (err) => {
       

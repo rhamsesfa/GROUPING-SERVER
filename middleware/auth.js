@@ -1,50 +1,41 @@
-const jwt = require("jsonwebtoken"); 
-const User = require("../models/User"); 
-
+const jwt = require("jsonwebtoken");
+const User = require("../models/User");
 
 module.exports = (req, res, next) => {
+  try {
+    const token = req.headers.authorization.split(" ")[1];
 
-        try{
+    const decodedToken = jwt.verify(
+      token,
+      "JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb"
+    );
 
-         
-   
+    const userId = decodedToken.userId;
 
-            const token = req.headers.authorization.split(' ')[1];
-            
-            const decodedToken = jwt.verify(token, "JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb"); 
+    req.auth = {
+      userId: userId,
+    };
 
-            const userId = decodedToken.userId; 
-            
-            req.auth = {
-                userId: userId
-            }
-          
-          
-          User.findOne({
-            
-              _id: userId
-          
-          }).then((user) => {
-            
-            console.log("ici meme");
-            
-            if(user){
-              
-                console.log("c'est ici");
-              
-                 next(); 
-              
-            }else{
-              
-                res.status(201).json({status: 5, message: "Déconnectez-le"});
-            }
-              
-          }, (err) => {
-            
-              res.status(402).json({err})
-          })
-          
-          /*  if(userId === "6425e7ffc2510904b2b6c128"){
+    User.findOne({
+      _id: userId,
+    }).then(
+      (user) => {
+        console.log("ici meme");
+
+        if (user) {
+          console.log("c'est ici");
+
+          next();
+        } else {
+          res.status(201).json({ status: 5, message: "Déconnectez-le" });
+        }
+      },
+      (err) => {
+        res.status(402).json({ err });
+      }
+    );
+
+    /*  if(userId === "6425e7ffc2510904b2b6c128"){
               
               Chronic.find().then((chronics) => {
                 
@@ -76,15 +67,8 @@ module.exports = (req, res, next) => {
                 
               })
             }*/
-          
-          
-        
-
-          
-
-        }catch(error){
-
-                console.log(error)
-                res.status(401).json({error})
-        }
-}
+  } catch (error) {
+    console.log(error);
+    res.status(401).json({ error });
+  }
+};

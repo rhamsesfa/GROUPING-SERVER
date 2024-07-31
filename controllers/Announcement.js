@@ -138,9 +138,9 @@ exports.getAnnouncementsById = (req, res) => {
 
 exports.getAnnonces = (req, res) => {
   
-    Announcement.find({active: true, status: "container"}).sort({date: -1}).limit(6).then( (containers) => {
+    Announcement.find({active: true, status: "container"}).sort({date: -1}).skip(req.body.startAt).limit(6).then( (containers) => {
       
-      Announcement.find({active: true, status: "kilos"}).sort({date: -1}).limit(6).then(async (kilos) => {
+      Announcement.find({active: true, status: "kilos"}).sort({date: -1}).skip(req.body.startBt).limit(6).then(async (kilos) => {
         
         
             for(let container of containers) {
@@ -154,7 +154,9 @@ exports.getAnnonces = (req, res) => {
               kilo.startCity2 = await City.findOne({name: kilo.startCity }); 
               kilo.endCity2 =  await City.findOne({name: kilo.endCity })
           }
-          console.log(kilos)
+         // console.log(kilos)
+        
+        
           res.status(201).json({status: 0, kilos, containers});
         
           

@@ -81,7 +81,7 @@ exports.addAnnouncement = (req, res) => {
   
   if(req.body.status == "kilos"){
     
-    console.log("la diez");
+    console.log("la diez", req.body);
     
         const announcement = new Announcement({
        

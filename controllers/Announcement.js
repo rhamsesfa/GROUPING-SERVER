@@ -122,7 +122,36 @@ exports.addAnnouncement = (req, res) => {
 
 }
 
-exports.getAnnouncementsById = (req, res) => {
+exports.getAnnouncementsById = async (req, res) => {
+  
+  
+  try {
+    
+    const containers = await Announcement.find({userId: req.auth.userId, active: true, status: "containers"}).sort({date: -1}).limit(6); 
+    const kilos = await Announcement.find({userId: req.auth.userId, active: true, status: "kilos"}).sort({date: -1}).limit(6); 
+    
+  
+          for(let container of containers) {
+            
+              container.startCity2 = await City.findOne({name: container.startCity }); 
+              container.endCity2 =  await City.findOne({name: container.endCity })
+          }
+        
+          for(let kilo of kilos) {
+            
+              kilo.startCity2 = await City.findOne({name: kilo.startCity }); 
+              kilo.endCity2 =  await City.findOne({name: kilo.endCity })
+          }
+    
+    res.status(200).json({status: 0, kilos, containers, startAt: containers.length === 6 ? parseInt(req.body.startAt) + 6 : null, 
+                         startBt: kilos.length === 6 ? parseInt(req.body.startBt) + 6 : null})
+    
+    
+  }catch(err){
+    
+      console.log(err); 
+      res.status(505).json({err})
+  }
   
   
   Announcement.find({userId: req.auth.userId, active: true}).then((annonces) => {

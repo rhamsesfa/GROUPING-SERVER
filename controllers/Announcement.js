@@ -83,7 +83,8 @@ exports.addAnnouncement = (req, res) => {
     
     console.log("la diez", req.body);
     
-        const announcement = new Announcement({
+        
+    const announcement = new Announcement({
        
         startCity: req.body.startCity, 
         endCity: req.body.endCity, 

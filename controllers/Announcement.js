@@ -143,7 +143,7 @@ exports.getAnnouncementsById = async (req, res) => {
               kilo.endCity2 =  await City.findOne({name: kilo.endCity })
           }
     
-    res.status(200).json({status: 0, kilos, containers, startAt: containers.length === 6 ? parseInt(req.body.startAt) + 6 : null, 
+    res.status(200).json({status: 0, kilos: [], containers: [], startAt: containers.length === 6 ? parseInt(req.body.startAt) + 6 : null, 
                          startBt: kilos.length === 6 ? parseInt(req.body.startBt) + 6 : null})
     
     
@@ -152,16 +152,6 @@ exports.getAnnouncementsById = async (req, res) => {
       console.log(err); 
       res.status(505).json({err})
   }
-  
-  
-  Announcement.find({userId: req.auth.userId, active: true}).then((annonces) => {
-    
-    res.status(200).json({annonces, status: 0}); 
-      
-  }, (err) => {
-    
-      res.status(500).json({err})
-  })
     
 }
 

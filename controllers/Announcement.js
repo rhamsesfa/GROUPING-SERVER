@@ -157,7 +157,8 @@ exports.getAnnonces = (req, res) => {
          // console.log(kilos)
         
         
-          res.status(201).json({status: 0, kilos, containers});
+          res.status(201).json({status: 0, kilos, containers, startAt: containers.length === 6 ? parseInt(req.body.startAt) + 6 : null, 
+                               startBt: kilos.length === 6 ? parseInt(req.body.startBt) + 6 : null});
         
           
       }, (err) => {

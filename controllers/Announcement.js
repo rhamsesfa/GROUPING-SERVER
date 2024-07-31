@@ -106,7 +106,7 @@ exports.addAnnouncement = (req, res) => {
         
     }, (err) => {
       
-        console.log(err); 
+      console.log(err); 
       res.status(505).json({err})
     })
     

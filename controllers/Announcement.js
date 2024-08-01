@@ -159,6 +159,8 @@ exports.getAnnouncementsById = async (req, res) => {
 
 exports.moreAnnouncements = async (req, res) => {
   
+  console.log(req.body);
+  
     try{
       
       const annonces = await Announcement.find({userId: req.auth.userId, active: true, status: req.body.status}).sort({date: -1})
@@ -182,7 +184,7 @@ exports.moreAnnouncements = async (req, res) => {
       }
       
       
-      res.status(200).json({status: 0, annonces, skip: annonces.length === 6 ? parseInt(req.body.skip) + 6 : null})
+      res.status(200).json({status: 0, annonces, skip: annonces.length === 6 ? parseInt(req.body.skip) + 6 : null, z:annonces.length })
       
       
     }catch(e){

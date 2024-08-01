@@ -124,6 +124,8 @@ exports.addAnnouncement = (req, res) => {
 
 exports.getAnnouncementsById = async (req, res) => {
   
+  console.log("On commence");
+  
   
   try {
     

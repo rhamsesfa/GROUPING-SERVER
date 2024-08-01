@@ -4,7 +4,8 @@ const City = require("../models/City");
 exports.addAnnouncementWithPdf = (req, res) => {
   
  
-      const draft = [`${req.protocol}s://${req.get("host")}/pdf_documents/${req.file.filename}`]; 
+      const draft = [`${req.protocol}s://${req.get("host")}/pdf_documents/${req.file.filename}`];
+  console.log(draft);
   
    const dateOfDeparture = new Date(req.body.dateOfDeparture);
   

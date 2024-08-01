@@ -182,7 +182,7 @@ exports.moreAnnouncements = async (req, res) => {
       }
       
       
-      res.status(200).json({status: 0, annonces, })
+      res.status(200).json({status: 0, annonces, skip: annonces.length === 6 ? parseInt(req.body.skip) + 6 : null})
       
       
     }catch(e){

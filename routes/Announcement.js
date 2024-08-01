@@ -13,6 +13,7 @@ router.post("/addannouncementwithpdf", auth, multer, announcementCtrl.addAnnounc
 router.post("/addannouncementwithImages", auth, multer2, announcementCtrl.addAnnouncementWithImages)
 router.get("/getannouncementbyid", auth, announcementCtrl.getAnnouncementsById); 
 router.get("/announces", announcementCtrl.getAnnonces);
+router.post("/moreannouces", auth, announcementCtrl.moreAnnouncements)
 
 module.exports = router; 
 

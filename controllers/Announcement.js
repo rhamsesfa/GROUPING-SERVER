@@ -6,11 +6,13 @@ exports.addAnnouncementWithPdf = (req, res) => {
  
       const draft = [`${req.protocol}s://${req.get("host")}/pdf_documents/${req.file.filename}`]; 
   
+   const dateOfDeparture = new Date(req.body.dateOfDeparture);
+  
        const announcement = new Announcement({
        
         startCity: req.body.startCity, 
         endCity: req.body.endCity, 
-        dateOfDeparture: req.body.date, 
+        dateOfDeparture: dateOfDeparture, 
         draft,
         pieds: req.body.pieds,
         description: req.body.description, 
@@ -37,7 +39,7 @@ exports.addAnnouncementWithPdf = (req, res) => {
 
 exports.addAnnouncementWithImages = (req, res) => {
   
-      console.log(req.files); 
+     // console.log(req.files); 
       console.log(req.body); 
   
       let draft = []; 
@@ -47,11 +49,13 @@ exports.addAnnouncementWithImages = (req, res) => {
           draft.push(`${req.protocol}s://${req.get("host")}/images/${file.filename}`)
       }
   
+  const dateOfDeparture = new Date(req.body.dateOfDeparture);
+  
        const announcement = new Announcement({
        
         startCity: req.body.startCity, 
         endCity: req.body.endCity, 
-        dateOfDeparture: req.body.date, 
+        dateOfDeparture: dateOfDeparture, 
         draft,
         pieds: req.body.pieds,
         description: req.body.description, 

@@ -159,6 +159,8 @@ exports.getAnnouncementsById = async (req, res) => {
 
 exports.getAnnonces = (req, res) => {
   
+  
+  
     Announcement.find({active: true, status: "container"}).sort({date: -1}).limit(req.body.three ? 3 : 6).then( (containers) => {
       
       Announcement.find({active: true, status: "kilos"}).sort({date: -1}).limit(req.body.three ? 3 : 6).then(async (kilos) => {

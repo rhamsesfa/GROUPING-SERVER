@@ -78,49 +78,44 @@ exports.addAnnouncementWithImages = (req, res) => {
 
 
 exports.addAnnouncement = (req, res) => {
-  
-  if(req.body.status == "kilos"){
-    
-    console.log("la diez", req.body);
-    
-        
-    const announcement = new Announcement({
-       
-        startCity: req.body.startCity, 
-        endCity: req.body.endCity, 
-        dateOfDeparture: req.body.date, 
-        kilosCount: req.body.kilosCount, 
-        kiloPrice: req.body.kilosPrice, 
-        company: req.body.company, 
-        description: req.body.description, 
-        userId: req.auth.userId, 
-        status: req.body.status, 
-        date: new Date(), 
-        active: true
-        
-    })
-    
-    announcement.save().then(() => {
-      
-      res.status(201).json({status: 0});
-      
-        
-    }, (err) => {
-      
-      console.log(err); 
-      res.status(505).json({err})
-    })
-    
-    
-  }else{
-    
-    console.log(req.body); 
-    console.log(req.file);
-    
-  }
-  
+  if (req.body.status === "kilos") {
+    console.log("la dix", req.body);
 
-}
+    // Convertir dateOfDeparture en objet Date
+    const dateOfDeparture = new Date(req.body.dateOfDeparture);
+
+    const announcement = new Announcement({
+      startCity: req.body.startCity,
+      endCity: req.body.endCity,
+      startCity2: req.body.startCity2,
+      endCity2: req.body.endCity2,
+      dateOfDeparture: dateOfDeparture, // Convertir en Date
+      kilosCount: req.body.kilosCount,
+      kiloPrice: req.body.kiloPrice,
+      company: req.body.company,
+      description: req.body.description,
+      pieds: req.body.pieds,
+      userId: req.auth.userId,
+      status: req.body.status,
+      date: new Date(), // Date actuelle
+      active: req.body.active || true, // Par défaut à true si non fourni
+      priceKilo: req.body.priceKilo || null // Par défaut à null si non fourni
+    });
+
+    announcement.save()
+      .then(() => {
+        res.status(201).json({ status: 0 });
+      })
+      .catch((err) => {
+        console.error("Erreur lors de la sauvegarde de l'annonce:", err);
+        res.status(500).json({ error: err.message });
+      });
+  } else {
+    console.log(req.body);
+    console.log(req.file);
+  }
+};
+
 
 exports.getAnnouncementsById = async (req, res) => {
   

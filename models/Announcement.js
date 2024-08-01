@@ -8,7 +8,7 @@ const AnnouncementSchema = mongoose.Schema({
     endCity2: {type: Object}, 
     dateOfDeparture: {type: Date}, 
     kilosCount: {type: Number}, 
-    kiloPrice: {type : }, 
+    kiloPrice: {type : Number }, 
     company: {type: String}, 
     description: {type: String}, 
     pieds: {type: Number},
@@ -20,6 +20,14 @@ const AnnouncementSchema = mongoose.Schema({
     priceKilo: {type: String, default: null} 
     
 })
+
+AnnouncementSchema.pre('save', function(next) {
+    if (this.kiloPrice && typeof this.kiloPrice === 'string') {
+        // Remplacer la virgule par un point
+        this.kiloPrice = parseFloat(this.kiloPrice.replace(',', '.'));
+    }
+    next();
+});
 
 
 module.exports = mongoose.model("Announcement", AnnouncementSchema); 

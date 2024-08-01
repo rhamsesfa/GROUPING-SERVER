@@ -8,7 +8,7 @@ const AnnouncementSchema = mongoose.Schema({
     endCity2: {type: Object}, 
     dateOfDeparture: {type: Date}, 
     kilosCount: {type: Number}, 
-    kiloPrice: {type : Number}, 
+    kiloPrice: {type : }, 
     company: {type: String}, 
     description: {type: String}, 
     pieds: {type: Number},

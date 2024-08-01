@@ -157,13 +157,48 @@ exports.getAnnouncementsById = async (req, res) => {
     
 }
 
+exports.moreAnnouncements = async (req, res) => {
+  
+    try{
+      
+      const annonces = await Announcement.find({userId: req.auth.userId, active: true, status: req.body.status}).sort({date: -1})
+      .skip(req.body.skip).limit(6); 
+      
+      if(req.body.status === "kilos"){
+        
+            for(let kilo of annonces) {
+            
+              kilo.startCity2 = await City.findOne({name: kilo.startCity }); 
+              kilo.endCity2 =  await City.findOne({name: kilo.endCity })
+          }
+          
+      }else{
+        
+          for(let container of annonces) {
+            
+              container.startCity2 = await City.findOne({name: container.startCity }); 
+              container.endCity2 =  await City.findOne({name: container.endCity })
+          }
+      }
+      
+      
+      res.status(200).json({status: 0, annonces, })
+      
+      
+    }catch(e){
+      
+      console.log(e); 
+      res.status(505).son({e})
+    }
+}
+
 exports.getAnnonces = (req, res) => {
   
   const currentDate = new Date(); 
   
-    Announcement.find({active: true, status: "container", date: {$gte: currentDate}}).sort({date: -1}).limit(req.body.three ? 3 : 6).then( (containers) => {
+    Announcement.find({active: true, status: "container", dateOfDeparture: {$gte: currentDate}}).sort({date: -1}).limit(req.body.three ? 3 : 6).then( (containers) => {
       
-      Announcement.find({active: true, status: "kilos",  date: {$gte: currentDate}}).sort({date: -1}).limit(req.body.three ? 3 : 6).then(async (kilos) => {
+      Announcement.find({active: true, status: "kilos",  dateOfDeparture: {$gte: currentDate}}).sort({date: -1}).limit(req.body.three ? 3 : 6).then(async (kilos) => {
         
         
             for(let container of containers) {

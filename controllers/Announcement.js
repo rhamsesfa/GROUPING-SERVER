@@ -83,7 +83,9 @@ exports.addAnnouncementWithImages = (req, res) => {
 
 
 exports.addAnnouncement = (req, res) => {
+ 
   if (req.body.status === "kilos") {
+    
     console.log("la dix", req.body);
 
     // Convertir dateOfDeparture en objet Date
@@ -109,7 +111,9 @@ exports.addAnnouncement = (req, res) => {
 
     announcement.save()
       .then(() => {
+      
         res.status(201).json({ status: 0 });
+      
       })
       .catch((err) => {
         console.error("Erreur lors de la sauvegarde de l'annonce:", err);

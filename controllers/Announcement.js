@@ -110,11 +110,9 @@ exports.addAnnouncement = (req, res) => {
     });
 
     announcement.save()
-      .then((Announce) => {
+      .then(() => {
       
-        
-        console.log(Announce);
-        res.status(201).json({ status: 0, Announce });
+        res.status(201).json({ status: 0});
       
       })
       .catch((err) => {

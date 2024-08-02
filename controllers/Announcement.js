@@ -105,14 +105,16 @@ exports.addAnnouncement = (req, res) => {
       userId: req.auth.userId,
       status: req.body.status,
       date: new Date(), // Date actuelle
-      active: req.body.active || true, // Par défaut à true si non fourni
+      active: true,
       priceKilo: req.body.priceKilo || null // Par défaut à null si non fourni
     });
 
     announcement.save()
-      .then(() => {
+      .then((Announce) => {
       
-        res.status(201).json({ status: 0 });
+        
+        console.log(Announce);
+        res.status(201).json({ status: 0, Announce });
       
       })
       .catch((err) => {

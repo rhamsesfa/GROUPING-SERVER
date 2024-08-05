@@ -14,7 +14,7 @@ router.post("/addannouncementwithImages", auth, multer2, announcementCtrl.addAnn
 router.get("/getannouncementbyid", auth, announcementCtrl.getAnnouncementsById); 
 router.post("/announces", announcementCtrl.getAnnonces);
 router.post("/moreannounces", auth, announcementCtrl.moreAnnouncements)
-
+router.post("/getannonce", auth, announcementCtrl.getAnnonce)
 module.exports = router; 
 
 

@@ -1,5 +1,6 @@
 const Announcement = require("../models/Announcement"); 
 const City = require("../models/City");
+const User = require("../models/User")
 
 exports.addAnnouncementWithPdf = (req, res) => {
   
@@ -238,8 +239,29 @@ exports.getAnnonces = (req, res) => {
     })
 }
 
-exports.getAnnonce = (req, res) => {
+exports.getAnnonce = async (req, res) => {
   
+    try{
+      
+        const annonce = await Announcement.findOne({_id: req.body.id}); 
+      
+        const pipeline = [
+          {
+            $match: {
+              _id: annonce.userId
+            }
+          }
+        ]
+        
+        const result = await User.aggregate(pipeline); 
+      
+        console.log(result);
+      
+    }catch(e){
+        
+        console.log(e); 
+      res.status(505).json({e})
+    }
   
-  
+
 }

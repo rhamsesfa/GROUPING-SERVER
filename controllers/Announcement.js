@@ -261,7 +261,7 @@ const pipeline = [
   {
     $lookup: {
       from: 'announcements',
-      localField: '$_id',
+      localField: '$id',
       foreignField: 'userId',
       as: 'announcements'
     }

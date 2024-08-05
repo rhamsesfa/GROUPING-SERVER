@@ -252,13 +252,39 @@ exports.getAnnonce = async (req, res) => {
       
         const userObjectId = new ObjectId(annonce.userId);
       
-        const pipeline = [
-          {
-            $match: {
-              _id: userObjectId
-            }
-          }, 
-        ]
+const pipeline = [
+  {
+    $match: {
+      _id: userObjectId
+    }
+  },
+  {
+    $lookup: {
+      from: 'announcements',
+      localField: '$_id',
+      foreignField: 'userId',
+      as: 'announcements'
+    }
+  },
+  {
+    $addFields: {
+      numberOfActiveAnnouncements: {
+        $size: {
+          $filter: {
+            input: '$announcements',
+            as: 'announcement',
+            cond: { $eq: ['$$announcement.active', true] }
+          }
+        }
+      }
+    }
+  },
+  {
+    $project: {
+      'announcements': 0 // Exclure les détails des annonces si vous ne les voulez pas dans le résultat final
+    }
+  }
+]
         
         const result = await User.aggregate(pipeline); 
       

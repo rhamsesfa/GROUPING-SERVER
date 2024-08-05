@@ -237,3 +237,9 @@ exports.getAnnonces = (req, res) => {
         res.status(500).json({err})
     })
 }
+
+exports.getAnnonce = (req, res) => {
+  
+  
+  
+}

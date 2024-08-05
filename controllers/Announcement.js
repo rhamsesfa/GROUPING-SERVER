@@ -257,7 +257,7 @@ exports.getAnnonce = async (req, res) => {
             $match: {
               _id: userObjectId
             }
-          }
+          }, 
         ]
         
         const result = await User.aggregate(pipeline); 

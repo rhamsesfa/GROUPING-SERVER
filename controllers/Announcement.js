@@ -1,6 +1,7 @@
 const Announcement = require("../models/Announcement"); 
 const City = require("../models/City");
 const User = require("../models/User")
+const mongoose = require('mongoose');
 
 exports.addAnnouncementWithPdf = (req, res) => {
   
@@ -244,6 +245,8 @@ exports.getAnnonce = async (req, res) => {
     try{
       
         const annonce = await Announcement.findOne({_id: req.body.id}); 
+      
+        console.log(annonce)
       
         const pipeline = [
           {

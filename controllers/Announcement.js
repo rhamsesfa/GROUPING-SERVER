@@ -271,9 +271,9 @@ const pipeline = [
       numberOfActiveAnnouncements: {
         $size: {
           $filter: {
-            input: '$announcements',
+            input: '$$announcements',
             as: 'announcement',
-            cond: { $eq: ['$$announcement.active', true] }
+            cond: { $eq: ['$announcement.active', true] }
           }
         }
       }

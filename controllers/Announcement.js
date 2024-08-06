@@ -256,7 +256,8 @@ exports.getAnnonce = async (req, res) => {
       
         const sum = await Announcement.countDocuments({userId: user._id, active: true}); 
       
-        console.log(sum);
+       
+        res.status(200).json({status: 0, annonce, sum, user}); 
       
         
       

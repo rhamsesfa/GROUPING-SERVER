@@ -248,6 +248,9 @@ exports.getAnnonce = async (req, res) => {
       
         const annonce = await Announcement.findOne({_id: req.body.id}); 
       
+        annonce.startCity2 = await City.findOne({name: annonce.startCity}); 
+        annonce.endCity2 = await City.findOne({name: annonce.endCity})
+      
         console.log(annonce); 
       
         const userObjectId = new ObjectId(annonce.userId);

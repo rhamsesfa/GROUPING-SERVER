@@ -110,7 +110,8 @@ exports.addAnnouncement = (req, res) => {
       status: req.body.status,
       date: new Date(), // Date actuelle
       active: true,
-      priceKilo: req.body.priceKilo || null // Par défaut à null si non fourni
+      priceKilo: req.body.priceKilo || null, // Par défaut à null si non fourni
+      coords: req.body.
     });
 
     announcement.save()

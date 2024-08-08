@@ -212,7 +212,7 @@ exports.getAnnonces = (req, res) => {
       Announcement.find({active: true, status: "kilos",  dateOfDeparture: {$gte: currentDate}}).sort({date: -1}).limit(req.body.three ? 3 : 6).then(async (kilos) => {
         
         
-            for(let container of containers) {
+        for(let container of containers) {
             
               container.startCity2 = await City.findOne({name: container.startCity }); 
               container.endCity2 =  await City.findOne({name: container.endCity })
@@ -328,6 +328,12 @@ exports.annoncesRecherche = async (req, res) => {
       $gte: startDate,
       $lt: endDate
     }, status: req.body.type, active: true}).sort({date: 1}).skip(req.body.startAt).limit(10);
+    
+      for(let kilo of annonces) {
+            
+              kilo.startCity2 = await City.findOne({name: kilo.startCity }); 
+              kilo.endCity2 =  await City.findOne({name: kilo.endCity })
+          }
     
     res.status(200).json({status: 0, annonces, count: annoncesCount, startAt: annonces.length === 10 ? parseInt(req.body.startAt) + 10 : null})
     

@@ -295,8 +295,19 @@ exports.annoncesRecherche = async (req, res) => {
     let month = monthNameToNumber(req.body.month); 
     let year = req.body.year; 
   
-      const startDate = new Date(year, month - 1, 1);
+    let startDate; 
+  
+  
+      console.log ("le mois", new Date().getMonth())
+  
+      if()
+  
+       startDate = new Date(year, month - 1, 1);
+  
+  
       const endDate = new Date(year, month, 1);
+  
+      
   
   
   try{
@@ -304,12 +315,12 @@ exports.annoncesRecherche = async (req, res) => {
     const annoncesCount = await   Announcement.countDocuments({startCity: req.body.start, endCity: req.body.end, dateOfDeparture: {
       $gte: startDate,
       $lt: endDate
-    }, status: req.body.type})
+    }, status: req.body.type, active: true})
     
      const annonces= await   Announcement.find({startCity: req.body.start, endCity: req.body.end, dateOfDeparture: {
       $gte: startDate,
       $lt: endDate
-    }, status: req.body.type}).sort({date: 1}).skip(req.body.startAt).limit(10);
+    }, status: req.body.type, active: true}).sort({date: 1}).skip(req.body.startAt).limit(10);
     
     res.status(200).json({status: 0, annonces, count: annoncesCount, startAt: annonces.length === 10 ? parseInt(req.body.startAt) + 10 : null})
     

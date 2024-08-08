@@ -32,7 +32,7 @@ const cityRouter = require("./routes/City");
 const userRouter = require("./routes/User");
 const countryRouter = require("./routes/Country"); 
 const announcementRouter = require("./routes/Announcement"); 
-const messageRouter = require("../routes/Message");
+const messageRouter = require("./routes/Message");
 
 
 app.use("/api/country", countryRouter)

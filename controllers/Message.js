@@ -8,7 +8,7 @@ exports.getMessages = async (req, res) => {
   
   try{
     
-    const messages = await  Message.find({user1Id: req.auth.userId, user2: req.body.user2}).sort({date: -1}).skip(req.body.startAt).limit(10)
+    const messages = await  Message.find({user1Id: req.auth.userId, user2Id: req.body.user2}).sort({date: -1}).skip(req.body.startAt).limit(10)
     
     const user = await User.findOne({_id: req.body.user2});
     
@@ -43,7 +43,7 @@ exports.addMessage = async (req, res) => {
       
         await newMessage.save(); 
       
-        const messages = await  Message.find({user1Id: req.auth.userId, user2: req.body._id}).sort({date: -1}).skip(req.body.startAt).limit(10)
+        const messages = await  Message.find({user1Id: req.auth.userId, user2Id: req.body._id}).sort({date: -1}).skip(req.body.startAt).limit(10)
     
         res.status(200).json({status: 0, messages, startAt: messages.length === 10 ? parseInt(req.body.startAt) + 10 : null})
         

@@ -1,6 +1,6 @@
 const Message = require("../models/Messages"); 
 const User = require("../models/User");
-
+const Announcement = require("../models/Announcement"); 
 
 exports.getMessages = async (req, res) => {
   
@@ -12,7 +12,9 @@ exports.getMessages = async (req, res) => {
     
     const user = await User.findOne({_id: req.body.user2});
     
-    res.status(200).json({status: 0, messages, user, startAt: messages.length === 10 ? parseInt(req.body.startAt) + 10 : null})
+    const count = await Announcement.countDocuments({userId: req.body.user2, active: true})
+    
+    res.status(200).json({status: 0, messages, user, startAt: messages.length === 10 ? parseInt(req.body.startAt) + 10 : null, count})
     
     
     

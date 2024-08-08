@@ -15,6 +15,8 @@ router.get("/getannouncementbyid", auth, announcementCtrl.getAnnouncementsById);
 router.post("/announces", announcementCtrl.getAnnonces);
 router.post("/moreannounces", auth, announcementCtrl.moreAnnouncements)
 router.post("/getannonce", announcementCtrl.getAnnonce)
+router.post("/search", announcementCtrl.annoncesRecherche)
+
 module.exports = router; 
 
 

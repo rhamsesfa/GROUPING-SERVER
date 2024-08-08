@@ -273,3 +273,8 @@ exports.getAnnonce = async (req, res) => {
   
 
 }
+
+exports.annoncesRecherche = (req, res) => {
+  
+    console.log(req.body);
+}

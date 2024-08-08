@@ -32,6 +32,7 @@ const cityRouter = require("./routes/City");
 const userRouter = require("./routes/User");
 const countryRouter = require("./routes/Country"); 
 const announcementRouter = require("./routes/Announcement"); 
+const messageRouter = require("../routes/Message");
 
 
 app.use("/api/country", countryRouter)
@@ -40,5 +41,6 @@ app.use("/api/user", userRouter);
 app.use('/pdf_documents', express.static(path.join(__dirname, 'pdf_documents')));
 app.use("/images", express.static(path.join(__dirname, "images")));
 app.use("/api/annonce", announcementRouter);
+app.use("/api/message", messageRouter); 
 
 module.exports = app;

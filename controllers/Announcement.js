@@ -290,7 +290,7 @@ exports.annoncesRecherche = async (req, res) => {
   
     console.log(req.body);
   
-    console.log(monthNameToNumber(req.body.month))
+   // console.log(monthNameToNumber(req.body.month))
   
     let month = monthNameToNumber(req.body.month); 
     let year = req.body.year; 
@@ -306,7 +306,14 @@ exports.annoncesRecherche = async (req, res) => {
       $lt: endDate
     }, status: req.body.type})
     
-  //  console.log(annoncesCount);
+     const annonces= await   Announcement.find({startCity: req.body.start, endCity: req.body.end, dateOfDeparture: {
+      $gte: startDate,
+      $lt: endDate
+    }, status: req.body.type}).sort({date: 1}).skip(req.body.startAt).limit(10);
+    
+    res.status(200).json({status: 0, annonces, count: annoncesCount, startAt: annonces.length === 10 ? parseInt(req.body.startAt) + 10 : null})
+    
+   console.log(annonces);
     
   }catch(e){
     

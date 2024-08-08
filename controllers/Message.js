@@ -28,7 +28,7 @@ exports.getMessages = async (req, res) => {
 }
 
 
-exports.addMessage = (req, res) => {
+exports.addMessage = async (req, res) => {
     
   const newMessage = new Message({
     
@@ -41,9 +41,18 @@ exports.addMessage = (req, res) => {
   
     try{
       
+        await newMessage.save(); 
+      
+        const messages = await  Message.find({user1Id: req.auth.userId, user2: req.body._id}).sort({date: -1}).skip(req.body.startAt).limit(10)
+    
+      
+        
+        
         
     }catch(e){
       
+        console.log(e); 
+        res.status(505).json({e})
         
     }
     

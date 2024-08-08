@@ -300,9 +300,16 @@ exports.annoncesRecherche = async (req, res) => {
   
       console.log ("le mois", new Date().getMonth())
   
-      if()
+      if(year === new Date().getFullYear() && (month - 1) === new Date().getMonth() ){
+        
+           startDate = new Date();
+      
+      }else{
+        
+             startDate = new Date(year, month - 1, 1);
+      }
   
-       startDate = new Date(year, month - 1, 1);
+      
   
   
       const endDate = new Date(year, month, 1);

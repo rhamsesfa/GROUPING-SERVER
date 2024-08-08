@@ -26,3 +26,25 @@ exports.getMessages = async (req, res) => {
   
 
 }
+
+
+exports.addMessage = (req, res) => {
+    
+  const newMessage = new Message({
+    
+      date: new Date(), 
+      text: req.body.text, 
+      user1Id: req.auth.userId, 
+      user2Id: req.body._id
+      
+  }); 
+  
+    try{
+      
+        
+    }catch(e){
+      
+        
+    }
+    
+}

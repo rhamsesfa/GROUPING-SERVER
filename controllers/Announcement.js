@@ -286,7 +286,7 @@ function monthNameToNumber(monthName) {
 
 
 
-exports.annoncesRecherche = (req, res) => {
+exports.annoncesRecherche = async (req, res) => {
   
     console.log(req.body);
   
@@ -299,9 +299,21 @@ exports.annoncesRecherche = (req, res) => {
       const endDate = new Date(year, month, 1);
   
   
-    Announcement.find({startCity: req.body.start, endCity: req.body.end, date: {
+  try{
+    
+    const annonces = await   Announcement.find({startCity: req.body.start, endCity: req.body.end, dateOfDeparture: {
       $gte: startDate,
-      $lte: endDate
-    }})
+      $lt: endDate
+    }, status: req.body.type})
+    
+    console.log(annonces);
+    
+  }catch(e){
+    
+      console.log(e); 
+    res.status(505).json({e})
+  }
+  
+  
     
 }

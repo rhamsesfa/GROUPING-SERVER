@@ -274,7 +274,34 @@ exports.getAnnonce = async (req, res) => {
 
 }
 
+function monthNameToNumber(monthName) {
+  const monthNames = [
+    'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+    'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'
+  ];
+
+  const monthIndex = monthNames.indexOf(monthName.toLowerCase());
+  return monthIndex >= 0 ? monthIndex + 1 : null;
+}
+
+
+
 exports.annoncesRecherche = (req, res) => {
   
     console.log(req.body);
+  
+    console.log(monthNameToNumber(req.body.month))
+  
+    let month = monthNameToNumber(req.body.month); 
+    let year = req.body.year; 
+  
+      const startDate = new Date(year, month - 1, 1);
+      const endDate = new Date(year, month, 1);
+  
+  
+    Announcement.find({startCity: req.body.start, endCity: req.body.end, date: {
+      $gte: startDate,
+      $lte: endDate
+    }})
+    
 }

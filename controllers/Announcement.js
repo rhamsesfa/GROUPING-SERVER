@@ -301,12 +301,12 @@ exports.annoncesRecherche = async (req, res) => {
   
   try{
     
-    const annonces = await   Announcement.find({startCity: req.body.start, endCity: req.body.end, dateOfDeparture: {
+    const annoncesCount = await   Announcement.countDocuments({startCity: req.body.start, endCity: req.body.end, dateOfDeparture: {
       $gte: startDate,
       $lt: endDate
     }, status: req.body.type})
     
-    console.log(annonces);
+  //  console.log(annoncesCount);
     
   }catch(e){
     

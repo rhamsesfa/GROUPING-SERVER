@@ -207,9 +207,9 @@ exports.getAnnonces = (req, res) => {
   
   const currentDate = new Date(); 
   
-    Announcement.find({active: true, status: "container", dateOfDeparture: {$gte: currentDate}}).sort({date: -1}).limit(req.body.three ? 3 : 6).then( (containers) => {
+    Announcement.find({active: true, status: "container", dateOfDeparture: {$gte: currentDate}}).sort({date: -1}).limit(req.body.three ? 3 : 60).then( (containers) => {
       
-      Announcement.find({active: true, status: "kilos",  dateOfDeparture: {$gte: currentDate}}).sort({date: -1}).limit(req.body.three ? 3 : 6).then(async (kilos) => {
+      Announcement.find({active: true, status: "kilos",  dateOfDeparture: {$gte: currentDate}}).sort({date: -1}).limit(req.body.three ? 3 : 60).then(async (kilos) => {
         
         
         for(let container of containers) {

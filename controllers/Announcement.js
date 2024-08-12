@@ -246,6 +246,7 @@ exports.getAnnonces = (req, res) => {
 exports.getAnnonce = async (req, res) => {
   
     try{
+        console.log(req.body.id)
       
         const annonce = await Announcement.findOne({_id: req.body.id}); 
       

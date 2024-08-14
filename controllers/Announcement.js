@@ -41,6 +41,10 @@ exports.addAnnouncementWithPdf = (req, res) => {
 
 
 exports.addAnnouncementWithImages = (req, res) => {
+       // Vérification que req.files existe et est un tableau
+    if (!req.files || !Array.isArray(req.files)) {
+        return res.status(400).json({ error: 'Aucun fichier téléchargé' });
+    }
   
      // console.log(req.files); 
       console.log(req.body); 

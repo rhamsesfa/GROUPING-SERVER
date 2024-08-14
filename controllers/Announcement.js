@@ -14,7 +14,6 @@ exports.addAnnouncementWithPdf = (req, res) => {
    const dateOfDeparture = new Date(req.body.dateOfDeparture);
   
        const announcement = new Announcement({
-       
         startCity: req.body.startCity, 
         endCity: req.body.endCity, 
         dateOfDeparture: dateOfDeparture, 
@@ -25,7 +24,6 @@ exports.addAnnouncementWithPdf = (req, res) => {
         status: "container", 
         date: new Date(), 
         active: false
-        
     })
        
     announcement.save().then(() => {

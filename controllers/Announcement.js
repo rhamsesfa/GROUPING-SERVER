@@ -205,45 +205,52 @@ exports.moreAnnouncements = async (req, res) => {
     }
 }
 
-exports.getAnnonces = (req, res) => {
-  
-  const currentDate = new Date(); 
-  
-    Announcement.find({active: true, status: "container", dateOfDeparture: {$gte: currentDate}}).sort({date: -1}).limit(req.body.three ? 3 : 60).then( (containers) => {
-      
-      Announcement.find({active: true, status: "kilos",  dateOfDeparture: {$gte: currentDate}}).sort({date: -1}).limit(req.body.three ? 3 : 60).then(async (kilos) => {
-        
-        
-        for(let container of containers) {
-            
-              container.startCity2 = await City.findOne({name: container.startCity }); 
-              container.endCity2 =  await City.findOne({name: container.endCity })
-          }
-        
-          for(let kilo of kilos) {
-            
-              kilo.startCity2 = await City.findOne({name: kilo.startCity }); 
-              kilo.endCity2 =  await City.findOne({name: kilo.endCity })
-          }
-         console.log(containers)
-        
-        
-          res.status(201).json({status: 0, kilos, containers});
-        
-          
-      }, (err) => {
-        
-          res.status(500).json({err})
-      })
-      
+exports.getAnnonces = async (req, res) => {
+  try {
+    const currentDate = new Date(); 
+    const limit = req.body.three ? 3 : 60;
+    
+    // Récupérer les annonces de conteneurs et de kilos
+    const containers = await Announcement.find({
+      active: true,
+      status: "container",
+      dateOfDeparture: { $gte: currentDate }
+    }).sort({ date: -1 }).limit(limit);
+    
+    const kilos = await Announcement.find({
+      active: true,
+      status: "kilos",
+      dateOfDeparture: { $gte: currentDate }
+    }).sort({ date: -1 }).limit(limit);
+    
+    // Récupérer toutes les villes nécessaires
+    const cityNames = [
+      ...new Set([...containers.map(c => c.startCity), ...containers.map(c => c.endCity),
+                  ...kilos.map(k => k.startCity), ...kilos.map(k => k.endCity)])
+    ];
+    
+    const cities = await City.find({ name: { $in: cityNames } });
+    const cityMap = new Map(cities.map(city => [city.name, city]));
 
+    // Ajouter les informations de ville aux conteneurs et kilos
+    containers.forEach(container => {
+      container.startCity2 = cityMap.get(container.startCity);
+      container.endCity2 = cityMap.get(container.endCity);
+    });
     
-    
-    }, (err) => {
-      
-        res.status(500).json({err})
-    })
-}
+    kilos.forEach(kilo => {
+      kilo.startCity2 = cityMap.get(kilo.startCity);
+      kilo.endCity2 = cityMap.get(kilo.endCity);
+    });
+
+    // Répondre avec les données traitées
+    res.status(200).json({ status: 0, kilos, containers });
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 
 exports.getAnnonce = async (req, res) => {
   

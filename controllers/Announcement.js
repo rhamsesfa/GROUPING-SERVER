@@ -23,7 +23,8 @@ exports.addAnnouncementWithPdf = (req, res) => {
         userId: req.auth.userId, 
         status: "container", 
         date: new Date(), 
-        active: false
+        active: false,
+        coords: req.body.coords || null
     })
        
     announcement.save().then(() => {
@@ -69,7 +70,8 @@ exports.addAnnouncementWithImages = (req, res) => {
         userId: req.auth.userId, 
         status: "container", 
         date: new Date(), 
-        active: false
+        active: false,
+        coords: req.body.coords || null
         
     })
        

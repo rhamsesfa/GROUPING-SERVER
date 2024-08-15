@@ -11,7 +11,9 @@ exports.addAnnouncementWithPdf = (req, res) => {
   const draft = [`${req.protocol}s://${req.get("host")}/pdf_documents/${req.file.filename}`];
   console.log(draft);
   
-   const dateOfDeparture = new Date(req.body.dateOfDeparture);
+   const dateOfDeparture = new Date(req.body.dateOfDeparture);  
+  // Conversion de coords en objet JSON
+  const coords = req.body.coords ? JSON.parse(req.body.coords) : null;
   
        const announcement = new Announcement({
         startCity: req.body.startCity, 
@@ -24,7 +26,7 @@ exports.addAnnouncementWithPdf = (req, res) => {
         status: "container", 
         date: new Date(), 
         active: false,
-        coords: req.body.coords || null
+        coords: coords
     })
        
     announcement.save().then(() => {
@@ -58,6 +60,8 @@ exports.addAnnouncementWithImages = (req, res) => {
       }
   
   const dateOfDeparture = new Date(req.body.dateOfDeparture);
+  // Conversion de coords en objet JSON
+  const coords = req.body.coords ? JSON.parse(req.body.coords) : null;
   
        const announcement = new Announcement({
        
@@ -71,7 +75,7 @@ exports.addAnnouncementWithImages = (req, res) => {
         status: "container", 
         date: new Date(), 
         active: false,
-        coords: req.body.coords || null
+        coords: coords
         
     })
        

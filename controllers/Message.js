@@ -33,13 +33,19 @@ exports.getMessagesById = async (req, res) => {
   
   try{
     
-    const messages = await  Message.find({user1Id: req.auth.userId}).sort({date: -1}).skip(req.body.startAt).limit(10)
+    const messages = await Message.find({ user1Id: req.auth.userId })
+      .sort({ date: -1 })
+      .skip(req.body.startAt)
+      .limit(10)
+    
+    // Extraire les identifiants user2Id des messages
+    const user2Ids = messages.map(message => message.user2Id);
     
     //const user = await User.findOne({_id: req.body.user2});
     
     //const count = await Announcement.countDocuments({userId: req.body.user2, active: true})
     
-    res.status(200).json({messages})
+    res.status(200).json({messages, user2Ids})
     
     //res.status(200).json({status: 0, messages, user, startAt: messages.length === 10 ? parseInt(req.body.startAt) + 10 : null, count})
     

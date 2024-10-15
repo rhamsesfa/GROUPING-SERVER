@@ -39,7 +39,7 @@ exports.getMessagesById = async (req, res) => {
     
     const count = await Announcement.countDocuments({userId: req.body.user2, active: true})
     
-    res.status(200).json({status: 0, messages, user, startAt: messages.length === 10 ? parseInt(req.body.startAt) + 10 : null, count})
+    //res.status(200).json({status: 0, messages, user, startAt: messages.length === 10 ? parseInt(req.body.startAt) + 10 : null, count})
     
     
     

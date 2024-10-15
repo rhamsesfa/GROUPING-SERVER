@@ -55,7 +55,7 @@ exports.getMessagesById = async (req, res) => {
 }
 
 exports.addMessage = async (req, res) => {
-    
+   console.log(req.body);
   const newMessage = new Message({
     
       date: new Date(), 
@@ -66,6 +66,7 @@ exports.addMessage = async (req, res) => {
   }); 
   
     try{
+      
       
         await newMessage.save(); 
       

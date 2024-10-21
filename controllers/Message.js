@@ -39,17 +39,26 @@ exports.getMessages = async (req, res) => {
 
 exports.getMessagesById = async (req, res) => {
   try {
-    // Étape 1 : Récupérer les messages
-    const messages = await Message.find({ user1Id: req.auth.userId })
+    // Étape 1 : Récupérer les messages où l'utilisateur est soit user1Id soit user2Id
+    const messages = await Message.find({
+      $or: [
+        { user1Id: req.auth.userId },
+        { user2Id: req.auth.userId }
+      ]
+    })
       .sort({ date: -1 })
       .skip(req.body.startAt)
       .limit(10);
 
-    // Étape 2 : Extraire les identifiants user2Id des messages sans doublon
-    const user2Ids = [...new Set(messages.map((message) => message.user2Id))];
+    // Étape 2 : Extraire les identifiants user2Id et user1Id des messages sans doublon
+    const userIds = [...new Set(
+      messages.map((message) => {
+        return message.user1Id === req.auth.userId ? message.user2Id : message.user1Id;
+      })
+    )];
 
     // Étape 3 : Rechercher les utilisateurs correspondants
-    const users = await User.find({ _id: { $in: user2Ids } });
+    const users = await User.find({ _id: { $in: userIds } });
 
     // Fonction pour regrouper les messages par expéditeur unique
     const groupMessagesBySender = (messages, users, currentUserId) => {
@@ -95,7 +104,6 @@ exports.getMessagesById = async (req, res) => {
     res.status(505).json({ e });
   }
 };
-
 
 exports.addMessage = async (req, res) => {
   console.log(req.body);

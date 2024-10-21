@@ -21,16 +21,13 @@ exports.getMessages = async (req, res) => {
       active: true,
     });
 
-    res
-      .status(200)
-      .json({
-        status: 0,
-        messages,
-        user,
-        startAt:
-          messages.length === 10 ? parseInt(req.body.startAt) + 10 : null,
-        count,
-      });
+    res.status(200).json({
+      status: 0,
+      messages,
+      user,
+      startAt: messages.length === 10 ? parseInt(req.body.startAt) + 10 : null,
+      count,
+    });
   } catch (e) {
     console.log(e);
     res.status(505).json({ e });
@@ -41,28 +38,31 @@ exports.getMessagesById = async (req, res) => {
   try {
     // Étape 1 : Récupérer les messages où l'utilisateur est soit user1Id soit user2Id
     const messages = await Message.find({
-      $or: [
-        { user1Id: req.auth.userId },
-        { user2Id: req.auth.userId }
-      ]
+      $or: [{ user1Id: req.auth.userId }, { user2Id: req.auth.userId }],
     })
       .sort({ date: -1 })
       .skip(req.body.startAt)
       .limit(10);
 
     // Étape 2 : Extraire les identifiants user2Id et user1Id des messages sans doublon
-    const userIds = [...new Set(
-      messages.map((message) => {
-        return message.user1Id === req.auth.userId ? message.user2Id : message.user1Id;
-      })
-    )];
+    const userIds = [
+      ...new Set(
+        messages.map((message) => {
+          return message.user1Id === req.auth.userId
+            ? message.user2Id
+            : message.user1Id;
+        })
+      ),
+    ];
 
     // Étape 3 : Rechercher les utilisateurs correspondants
     const users = await User.find({ _id: { $in: userIds } });
 
     // Fonction pour regrouper les messages par expéditeur unique
     const groupMessagesBySender = (messages, users, currentUserId) => {
-      const usersById = Object.fromEntries(users.map(user => [user._id, user]));
+      const usersById = Object.fromEntries(
+        users.map((user) => [user._id, user])
+      );
 
       const grouped = messages.reduce((acc, msg) => {
         // Déterminer si l'utilisateur actuel est l'expéditeur du message
@@ -70,10 +70,13 @@ exports.getMessagesById = async (req, res) => {
         const otherUserId = isCurrentUserSender ? msg.user2Id : msg.user1Id;
 
         // Trouver l'autre utilisateur (celui qui n'est pas l'utilisateur actuel)
-        const otherUser = usersById[otherUserId] || { name: 'Utilisateur inconnu', photo: '' };
+        const otherUser = usersById[otherUserId] || {
+          name: "Utilisateur inconnu",
+          photo: "",
+        };
 
         // Vérifier si une conversation avec cet utilisateur existe déjà
-        let conversation = acc.find(item => item.user._id === otherUser._id);
+        let conversation = acc.find((item) => item.user._id === otherUser._id);
         if (!conversation) {
           conversation = { user: otherUser, messages: [] };
           acc.push(conversation);
@@ -84,7 +87,7 @@ exports.getMessagesById = async (req, res) => {
           _id: msg._id,
           text: msg.text,
           date: msg.date,
-          sender: isCurrentUserSender ? usersById[currentUserId] : otherUser
+          sender: isCurrentUserSender ? usersById[currentUserId] : otherUser,
         });
 
         return acc;
@@ -94,11 +97,14 @@ exports.getMessagesById = async (req, res) => {
     };
 
     // Utiliser la fonction pour regrouper les messages par expéditeur
-    const groupedMessages = groupMessagesBySender(messages, users, req.auth.userId);
+    const groupedMessages = groupMessagesBySender(
+      messages,
+      users,
+      req.auth.userId
+    );
 
     // Retourner la réponse avec les messages regroupés
     res.status(200).json({ groupedMessages, status: 0 });
-
   } catch (e) {
     console.log(e);
     res.status(505).json({ e });
@@ -125,14 +131,11 @@ exports.addMessage = async (req, res) => {
       .skip(req.body.startAt)
       .limit(10);
 
-    res
-      .status(200)
-      .json({
-        status: 0,
-        messages,
-        startAt:
-          messages.length === 10 ? parseInt(req.body.startAt) + 10 : null,
-      });
+    res.status(200).json({
+      status: 0,
+      messages,
+      startAt: messages.length === 10 ? parseInt(req.body.startAt) + 10 : null,
+    });
   } catch (e) {
     console.log(e);
     res.status(505).json({ e });

@@ -38,8 +38,6 @@ exports.getMessages = async (req, res) => {
 };
 
 exports.getMessagesById = async (req, res) => {
-  //console.log(req.body);
-
   try {
     // Étape 1 : Récupérer les messages
     const messages = await Message.find({ user1Id: req.auth.userId })
@@ -53,16 +51,51 @@ exports.getMessagesById = async (req, res) => {
     // Étape 3 : Rechercher les utilisateurs correspondants
     const users = await User.find({ _id: { $in: user2Ids } });
 
-    //const count = await Announcement.countDocuments({userId: req.body.user2, active: true})
+    // Fonction pour regrouper les messages par expéditeur unique
+    const groupMessagesBySender = (messages, users, currentUserId) => {
+      const usersById = Object.fromEntries(users.map(user => [user._id, user]));
 
-    res.status(200).json({ messages, user2Ids, users, status: 0});
+      const grouped = messages.reduce((acc, msg) => {
+        // Déterminer si l'utilisateur actuel est l'expéditeur du message
+        const isCurrentUserSender = msg.user1Id === currentUserId;
+        const otherUserId = isCurrentUserSender ? msg.user2Id : msg.user1Id;
 
-    //res.status(200).json({status: 0, messages, user, startAt: messages.length === 10 ? parseInt(req.body.startAt) + 10 : null, count})
+        // Trouver l'autre utilisateur (celui qui n'est pas l'utilisateur actuel)
+        const otherUser = usersById[otherUserId] || { name: 'Utilisateur inconnu', photo: '' };
+
+        // Vérifier si une conversation avec cet utilisateur existe déjà
+        let conversation = acc.find(item => item.user._id === otherUser._id);
+        if (!conversation) {
+          conversation = { user: otherUser, messages: [] };
+          acc.push(conversation);
+        }
+
+        // Ajouter le message à la conversation correspondante, avec l'objet complet du sender
+        conversation.messages.push({
+          _id: msg._id,
+          text: msg.text,
+          date: msg.date,
+          sender: isCurrentUserSender ? usersById[currentUserId] : otherUser
+        });
+
+        return acc;
+      }, []);
+
+      return grouped;
+    };
+
+    // Utiliser la fonction pour regrouper les messages par expéditeur
+    const groupedMessages = groupMessagesBySender(messages, users, req.auth.userId);
+
+    // Retourner la réponse avec les messages regroupés
+    res.status(200).json({ groupedMessages, status: 0 });
+
   } catch (e) {
     console.log(e);
     res.status(505).json({ e });
   }
 };
+
 
 exports.addMessage = async (req, res) => {
   console.log(req.body);

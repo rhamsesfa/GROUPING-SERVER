@@ -105,7 +105,7 @@ exports.getMessagesById = async (req, res) => {
     );
 
     // Retourner la réponse avec les messages regroupés
-    res.status(200).json({ groupedMessages, users, status: 0 });
+    res.status(200).json({ groupedMessages, status: 0 });
   } catch (e) {
     console.log(e);
     res.status(505).json({ e });

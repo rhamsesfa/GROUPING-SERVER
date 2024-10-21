@@ -46,13 +46,14 @@ exports.getMessagesById = async (req, res) => {
 
     // Étape 2 : Extraire les identifiants user2Id et user1Id des messages sans doublon
     const userIds = [
-      ...new Set(
-        messages.map((message) => {
+      ...new Set([
+        req.auth.userId, // Ajouter l'utilisateur actuel à la liste
+        ...messages.map((message) => {
           return message.user1Id === req.auth.userId
             ? message.user2Id
             : message.user1Id;
-        })
-      ),
+        }),
+      ]),
     ];
 
     // Étape 3 : Rechercher les utilisateurs correspondants

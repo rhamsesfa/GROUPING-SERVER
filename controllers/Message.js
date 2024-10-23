@@ -113,7 +113,7 @@ exports.getMessagesById = async (req, res) => {
 };
 
 exports.addMessage = async (req, res) => {
-  console.log(req.body);
+  console.log(req.body, 'envoi du message en base de données');
   const newMessage = new Message({
     date: new Date(),
     text: req.body.text,

@@ -2,6 +2,8 @@ const City = require("../models/City");
 
 exports.addCity = (req, res) => {
   
+    console.log(req.body);
+  
     City.findOne({code: req.body.code}).then((ville) => {
       
       if(ville){

@@ -1,8 +1,14 @@
 const http = require('http');
 const { Server } = require('socket.io');
+const jwt = require('jsonwebtoken'); // JWT pour la vérification du token envoyé par socket.io
 const app = require('./app');
 
 const server = http.createServer(app);
+
+// Clé secrète pour JWT (remplacer par une clé sécurisée dans un fichier d'env)
+const JWT_SECRET = process.env.JWT_SECRET || 'JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb';
+
+const { addMessageweb } = require('./controllers/Message'); // Import du contrôleur d'ajout de message
 
 // Configuration de Socket.IO
 const io = new Server(server, {
@@ -16,7 +22,6 @@ const io = new Server(server, {
 const connectedUsers = new Map();
 
 
-const { addMessageweb } = require('./controllers/Message'); // Import du contrôleur d'ajout de message
 
 
 io.on('connection', (socket) => {

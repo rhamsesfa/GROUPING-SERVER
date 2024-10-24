@@ -15,6 +15,11 @@ const io = new Server(server, {
 // Stockage des utilisateurs connectés
 const connectedUsers = new Map();
 
+
+const { addMessageweb } = require('./controllers/Messages.js'); // Import du contrôleur d'ajout de message
+
+
+
 const normalizePort = val => {
   const port = parseInt(val, 10);
 

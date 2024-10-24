@@ -2,6 +2,19 @@ const http = require('http');
 const { Server } = require('socket.io');
 const app = require('./app');
 
+const server = http.createServer(app);
+
+// Configuration de Socket.IO
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
+});
+
+// Stockage des utilisateurs connectés
+const connectedUsers = new Map();
+
 const normalizePort = val => {
   const port = parseInt(val, 10);
 
@@ -36,7 +49,6 @@ const errorHandler = error => {
   }
 };
 
-const server = http.createServer(app);
 
 server.on('error', errorHandler);
 server.on('listening', () => {

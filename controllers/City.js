@@ -16,7 +16,7 @@ exports.addCity = (req, res) => {
           name: req.body.name, 
           country: req.body.country, 
           code: req.body.code, 
-          country_id: req.body.country
+          country_id: req.body.country_id
             
           })
 

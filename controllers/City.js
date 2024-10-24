@@ -4,7 +4,7 @@ exports.addCity = (req, res) => {
   
     console.log(req.body);
   
-    City.findOne({code: req.body.code}).then((ville) => {
+    City.findOne({$or: [{code: req.body.code}, {name: req.body.name}]}).then((ville) => {
       
       if(ville){
         

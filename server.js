@@ -1,21 +1,23 @@
-const http = require('http');
-const { Server } = require('socket.io');
-const jwt = require('jsonwebtoken'); // JWT pour la vérification du token envoyé par socket.io
-const app = require('./app');
+const http = require("http");
+const { Server } = require("socket.io");
+const jwt = require("jsonwebtoken"); // JWT pour la vérification du token envoyé par socket.io
+const app = require("./app");
 
 const server = http.createServer(app);
 
 // Clé secrète pour JWT (remplacer par une clé sécurisée dans un fichier d'env)
-const JWT_SECRET = process.env.JWT_SECRET || 'JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb';
+const JWT_SECRET =
+  process.env.JWT_SECRET ||
+  "JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb";
 
-const { addMessageweb } = require('./controllers/Message'); // Import du contrôleur d'ajout de message
+const { addMessageweb } = require("./controllers/Message"); // Import du contrôleur d'ajout de message
 
 // Configuration de Socket.IO
 const io = new Server(server, {
   cors: {
     origin: "*",
-    methods: ["GET", "POST"]
-  }
+    methods: ["GET", "POST"],
+  },
 });
 
 // Stockage des utilisateurs connectés
@@ -26,13 +28,13 @@ io.use((socket, next) => {
   const token = socket.handshake.auth?.token; // Récupérer le token des données d'authentification
 
   if (!token) {
-    return next(new Error('Token manquant'));
+    return next(new Error("Token manquant"));
   }
 
   jwt.verify(token, JWT_SECRET, (err, decoded) => {
     if (err) {
-      console.error('Token invalide:', err);
-      return next(new Error('Authentification échouée'));
+      console.error("Token invalide:", err);
+      return next(new Error("Authentification échouée"));
     }
 
     // Ajouter l'ID de l'utilisateur décodé au socket
@@ -41,41 +43,41 @@ io.use((socket, next) => {
   });
 });
 
-
 // Gestion des connexions Socket.IO
-io.on('connection', (socket) => {
+io.on("connection", (socket) => {
   console.log(`Utilisateur ${socket.userId} connecté`);
 
   // Ajouter l'utilisateur aux utilisateurs connectés
   connectedUsers.set(socket.userId, socket.id);
+  console.log()
 
   // Notifier les autres utilisateurs de l'état de connexion
-  socket.broadcast.emit('userStatusChanged', {
+  socket.broadcast.emit("userStatusChanged", {
     userId: socket.userId,
-    status: 'online',
+    status: "online",
   });
 
   // Rejoindre une room
-  socket.on('joinRoom', ({ receiverId }) => {
-    const roomId = [socket.userId, receiverId].sort().join('-');
+  socket.on("joinRoom", ({ receiverId }) => {
+    const roomId = [socket.userId, receiverId].sort().join("-");
     socket.join(roomId);
     console.log(`Utilisateur ${socket.userId} a rejoint la room : ${roomId}`);
   });
 
   // Gestion de l'envoi de messages
-  socket.on('sendMessage', async ({ receiverId, message }) => {
-    const roomId = [socket.userId, receiverId].sort().join('-');
+  socket.on("sendMessage", async ({ receiverId, message }) => {
+    const roomId = [socket.userId, receiverId].sort().join("-");
     const receiverSocketId = connectedUsers.get(receiverId);
 
     const temporaryMessage = {
       text: message.text,
       date: new Date(),
       sender: socket.userId,
-      status: 'pending',
+      status: "pending",
     };
 
     // Émettre immédiatement le message à la room
-    io.to(roomId).emit('messageReceived', temporaryMessage);
+    io.to(roomId).emit("messageReceived", temporaryMessage);
 
     try {
       const savedMessage = await addMessageweb({
@@ -85,36 +87,37 @@ io.on('connection', (socket) => {
       });
 
       // Mise à jour du statut du message
-      io.to(roomId).emit('messageStatusUpdate', {
+      io.to(roomId).emit("messageStatusUpdate", {
         _id: savedMessage._id,
-        status: 'sent',
+        status: "sent",
       });
 
       if (receiverSocketId) {
-        io.to(receiverSocketId).emit('newMessageNotification', {
+        io.to(receiverSocketId).emit("newMessageNotification", {
           senderId: socket.userId,
           message: savedMessage,
         });
       }
     } catch (error) {
-      console.error('Erreur lors de l\'enregistrement du message:', error);
-      socket.emit('messageError', { error: 'Erreur lors de l\'envoi du message' });
+      console.error("Erreur lors de l'enregistrement du message:", error);
+      socket.emit("messageError", {
+        error: "Erreur lors de l'envoi du message",
+      });
     }
   });
 
   // Gestion de la déconnexion
-  socket.on('disconnect', () => {
+  socket.on("disconnect", () => {
     connectedUsers.delete(socket.userId);
-    socket.broadcast.emit('userStatusChanged', {
+    socket.broadcast.emit("userStatusChanged", {
       userId: socket.userId,
-      status: 'offline',
+      status: "offline",
     });
     console.log(`Utilisateur ${socket.userId} déconnecté`);
   });
 });
 
-
-const normalizePort = val => {
+const normalizePort = (val) => {
   const port = parseInt(val, 10);
 
   if (isNaN(port)) {
@@ -125,22 +128,23 @@ const normalizePort = val => {
   }
   return false;
 };
-const port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
+const port = normalizePort(process.env.PORT || "3000");
+app.set("port", port);
 
-const errorHandler = error => {
-  if (error.syscall !== 'listen') {
+const errorHandler = (error) => {
+  if (error.syscall !== "listen") {
     throw error;
   }
   const address = server.address();
-  const bind = typeof address === 'string' ? 'pipe ' + address : 'port: ' + port;
+  const bind =
+    typeof address === "string" ? "pipe " + address : "port: " + port;
   switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges.');
+    case "EACCES":
+      console.error(bind + " requires elevated privileges.");
       process.exit(1);
       break;
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use.');
+    case "EADDRINUSE":
+      console.error(bind + " is already in use.");
       process.exit(1);
       break;
     default:
@@ -148,12 +152,11 @@ const errorHandler = error => {
   }
 };
 
-
-server.on('error', errorHandler);
-server.on('listening', () => {
+server.on("error", errorHandler);
+server.on("listening", () => {
   const address = server.address();
-  const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
-  console.log('Listening on ' + bind);
+  const bind = typeof address === "string" ? "pipe " + address : "port " + port;
+  console.log("Listening on " + bind);
 });
 
 server.listen(port);

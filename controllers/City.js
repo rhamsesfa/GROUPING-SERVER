@@ -35,11 +35,11 @@ exports.getCities = (req, res) => {
 
 exports.getCitiesByCountryId = (req, res) => {
   
-    console.log(req.body)
+    //console.log(req.body)
   
     City.find({country_id: req.body._id}).then((cities) => {
       
-      console.log(cities);
+      //console.log(cities);
       
        res.status(200).json({status: 0, cities});
         

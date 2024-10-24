@@ -9,7 +9,7 @@ exports.addAnnouncementWithPdf = (req, res) => {
   
  
   const draft = [`${req.protocol}s://${req.get("host")}/pdf_documents/${req.file.filename}`];
-  console.log(draft);
+  //console.log(draft);
   
    const dateOfDeparture = new Date(req.body.dateOfDeparture);  
   // Conversion de coords en objet JSON
@@ -50,7 +50,7 @@ exports.addAnnouncementWithImages = (req, res) => {
     }
   
      // console.log(req.files); 
-      console.log(req.body); 
+      //console.log(req.body); 
   
       let draft = []; 
   
@@ -98,7 +98,7 @@ exports.addAnnouncement = (req, res) => {
  
   if (req.body.status === "kilos") {
     
-    console.log("la dix", req.body);
+    //console.log("la dix", req.body);
 
     // Convertir dateOfDeparture en objet Date
     const dateOfDeparture = new Date(req.body.dateOfDeparture);
@@ -141,7 +141,7 @@ exports.addAnnouncement = (req, res) => {
 
 exports.getAnnouncementsById = async (req, res) => {
   
-  console.log("On commence");
+  //console.log("On commence");
   
   
   try {
@@ -176,7 +176,7 @@ exports.getAnnouncementsById = async (req, res) => {
 
 exports.moreAnnouncements = async (req, res) => {
   
-  console.log(req.body);
+  //console.log(req.body);
   
     try{
       
@@ -215,7 +215,7 @@ exports.getAnnonces = async (req, res) => {
   try {
     const currentDate = new Date(); 
     const limit = req.body.three ? 3 : 60;
-    console.log("Current Date:", currentDate);
+    //console.log("Current Date:", currentDate);
     
     // Récupérer les annonces de conteneurs et de kilos
     const containers = await Announcement.find({
@@ -224,7 +224,7 @@ exports.getAnnonces = async (req, res) => {
       dateOfDeparture: { $gte: currentDate }
     }).sort({ date: -1 }).limit(limit);
     
-    console.log("Containers found:", containers.length);
+    //console.log("Containers found:", containers.length);
     
     const kilos = await Announcement.find({
       active: true,
@@ -307,7 +307,7 @@ function monthNameToNumber(monthName) {
 
 exports.annoncesRecherche = async (req, res) => {
   
-    console.log(req.body);
+    //console.log(req.body);
   
    // console.log(monthNameToNumber(req.body.month))
   
@@ -356,7 +356,7 @@ exports.annoncesRecherche = async (req, res) => {
     
     res.status(200).json({status: 0, annonces, count: annoncesCount, startAt: annonces.length === 10 ? parseInt(req.body.startAt) + 10 : null})
     
-   console.log(annonces);
+   //console.log(annonces);
     
   }catch(e){
     

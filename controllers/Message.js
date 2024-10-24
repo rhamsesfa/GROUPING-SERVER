@@ -143,3 +143,19 @@ exports.addMessage = async (req, res) => {
   }
 };
 
+// Ajout du message en temps reel avec retour du message sauvegardé
+exports.addMessageweb = async ({ senderId, receiverId, text }) => {
+  const newMessage = new Message({
+    date: new Date(),
+    text,
+    user1Id: senderId,
+    user2Id: receiverId,
+  });
+
+  try {
+    return await newMessage.save(); // Retourne le message sauvegardé
+  } catch (error) {
+    console.error('Erreur lors de la sauvegarde du message :', error);
+    throw error;
+  }
+};

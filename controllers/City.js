@@ -2,7 +2,14 @@ const City = require("../models/City");
 
 exports.addCity = (req, res) => {
   
-    const city = new City({
+    City.findOne({code: req.body.code}).then((ville) => {
+      
+      if(ville){
+        
+          
+      }else{
+        
+      const city = new City({
       name: req.body.name, 
       country: req.body.country, 
       code: req.body.code
@@ -16,6 +23,15 @@ exports.addCity = (req, res) => {
       
         res.status(505).json({err})
     })
+      }
+      
+    }, (err) => {
+      
+        console.log(err); 
+        res.status(505).json({err})
+    })
+  
+
 }
 
 

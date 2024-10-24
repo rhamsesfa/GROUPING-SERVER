@@ -49,7 +49,7 @@ io.on("connection", (socket) => {
 
   // Ajouter l'utilisateur aux utilisateurs connectés
   connectedUsers.set(socket.userId, socket.id);
-  console.log()
+  console.log(connectedUsers)
 
   // Notifier les autres utilisateurs de l'état de connexion
   socket.broadcast.emit("userStatusChanged", {

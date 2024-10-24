@@ -41,10 +41,11 @@ io.use((socket, next) => {
   });
 });
 
+
 // Gestion des connexions Socket.IO
 io.on('connection', (socket) => {
   console.log(`Utilisateur ${socket.userId} connecté`);
-  
+
   // Ajouter l'utilisateur aux utilisateurs connectés
   connectedUsers.set(socket.userId, socket.id);
 
@@ -62,37 +63,36 @@ io.on('connection', (socket) => {
   });
 
   // Gestion de l'envoi de messages
-  socket.on('sendMessage', async ({ senderId, receiverId, message }) => {
-    const roomId = [senderId, receiverId].sort().join('-');
+  socket.on('sendMessage', async ({ receiverId, message }) => {
+    const roomId = [socket.userId, receiverId].sort().join('-');
     const receiverSocketId = connectedUsers.get(receiverId);
 
-    // Émettre immédiatement le message à la room
     const temporaryMessage = {
       text: message.text,
       date: new Date(),
-      sender: senderId,
-      status: 'pending', // Statut temporaire en attente de sauvegarde
+      sender: socket.userId,
+      status: 'pending',
     };
+
+    // Émettre immédiatement le message à la room
     io.to(roomId).emit('messageReceived', temporaryMessage);
 
-    // Sauvegarde du message en base
     try {
       const savedMessage = await addMessageweb({
-        senderId,
+        senderId: socket.userId,
         receiverId,
         text: message.text,
       });
 
-      // Mise à jour du statut à "envoyé"
+      // Mise à jour du statut du message
       io.to(roomId).emit('messageStatusUpdate', {
         _id: savedMessage._id,
         status: 'sent',
       });
 
-      // Notifier le destinataire s'il est connecté mais pas dans la room
       if (receiverSocketId) {
         io.to(receiverSocketId).emit('newMessageNotification', {
-          senderId,
+          senderId: socket.userId,
           message: savedMessage,
         });
       }
@@ -102,15 +102,14 @@ io.on('connection', (socket) => {
     }
   });
 
+  // Gestion de la déconnexion
   socket.on('disconnect', () => {
-    const userId = [...connectedUsers.entries()]
-      .find(([_, socketId]) => socketId === socket.id)?.[0];
-
-    if (userId) {
-      connectedUsers.delete(userId);
-      socket.broadcast.emit('userStatusChanged', { userId, status: 'offline' });
-    }
-    console.log('Utilisateur déconnecté');
+    connectedUsers.delete(socket.userId);
+    socket.broadcast.emit('userStatusChanged', {
+      userId: socket.userId,
+      status: 'offline',
+    });
+    console.log(`Utilisateur ${socket.userId} déconnecté`);
   });
 });
 

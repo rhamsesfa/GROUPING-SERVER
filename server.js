@@ -21,24 +21,44 @@ const io = new Server(server, {
 // Stockage des utilisateurs connectés
 const connectedUsers = new Map();
 
+// Middleware pour vérifier le token JWT
+io.use((socket, next) => {
+  const token = socket.handshake.auth?.token; // Récupérer le token des données d'authentification
 
+  if (!token) {
+    return next(new Error('Token manquant'));
+  }
 
+  jwt.verify(token, JWT_SECRET, (err, decoded) => {
+    if (err) {
+      console.error('Token invalide:', err);
+      return next(new Error('Authentification échouée'));
+    }
 
+    // Ajouter l'ID de l'utilisateur décodé au socket
+    socket.userId = decoded.userId;
+    next();
+  });
+});
+
+// Gestion des connexions Socket.IO
 io.on('connection', (socket) => {
-  console.log('Nouvelle connexion socket établie');
+  console.log(`Utilisateur ${socket.userId} connecté`);
+  
+  // Ajouter l'utilisateur aux utilisateurs connectés
+  connectedUsers.set(socket.userId, socket.id);
 
-  socket.on('userConnected', (userId) => {
-    console.log(`Utilisateur ${userId} connecté`);
-    connectedUsers.set(userId, socket.id);
-
-    // Notifier les autres utilisateurs
-    socket.broadcast.emit('userStatusChanged', { userId, status: 'online' });
+  // Notifier les autres utilisateurs de l'état de connexion
+  socket.broadcast.emit('userStatusChanged', {
+    userId: socket.userId,
+    status: 'online',
   });
 
-  socket.on('joinRoom', ({ senderId, receiverId }) => {
-    const roomId = [senderId, receiverId].sort().join('-');
+  // Rejoindre une room
+  socket.on('joinRoom', ({ receiverId }) => {
+    const roomId = [socket.userId, receiverId].sort().join('-');
     socket.join(roomId);
-    console.log(`Utilisateur a rejoint la room : ${roomId}`);
+    console.log(`Utilisateur ${socket.userId} a rejoint la room : ${roomId}`);
   });
 
   // Gestion de l'envoi de messages

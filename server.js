@@ -72,7 +72,7 @@ io.on("connection", (socket) => {
     const temporaryMessage = {
       text: message.text,
       date: new Date(),
-      sender: socket.userId,
+      sender: message.sender,
       status: "pending",
     };
 

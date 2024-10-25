@@ -113,7 +113,7 @@ io.on("connection", (socket) => {
       userId: socket.userId,
       status: "offline",
     });
-    console.log(`Utilisateur ${socket.userId} déconnecté`);
+    console.log(`Utilisateur ${socket.userId} déconnecté`, connectedUsers);
   });
 });
 

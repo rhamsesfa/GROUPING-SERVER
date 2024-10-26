@@ -93,11 +93,9 @@ io.on("connection", (socket) => {
       });
 
       if (receiverSocketId) {
-        temporaryMessage.message['_id'] = savedMessage._id;
         io.to(receiverSocketId).emit("newMessageNotification", {
           senderId: socket.userId,
-          message: savedMessage,
-          temporaryMessage
+          message: savedMessage
         });
       }
     } catch (error) {

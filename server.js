@@ -99,7 +99,7 @@ io.on("connection", (socket) => {
         temporaryMessage._id = savedMessage._id;
         io.to(receiverSocketId).emit("newMessageNotification", {
           senderId: socket.userId,
-          receiverId: savedMessage,
+          receiverId: savedMessage.user2Id,
           message: temporaryMessage,
         });
       }

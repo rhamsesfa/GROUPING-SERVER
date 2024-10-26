@@ -94,9 +94,13 @@ io.on("connection", (socket) => {
       });
 
       if (receiverSocketId) {
+        temporaryMessage.date = savedMessage.date;
+        temporaryMessage.status = savedMessage.status;
+        temporaryMessage._id = savedMessage._id;
         io.to(receiverSocketId).emit("newMessageNotification", {
           senderId: socket.userId,
-          message: savedMessage
+          receiberId: savedMessage,
+          message: temporaryMessage,
         });
       }
     } catch (error) {

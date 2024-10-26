@@ -58,8 +58,9 @@ io.on("connection", (socket) => {
   });
 
   // Rejoindre une room
-  socket.on("joinRoom", ({ receiverId }) => {
-    const roomId = [socket.userId, receiverId].sort().join("-");
+  socket.on("joinRoom", ({ roomId1 }) => {
+    //const roomId = [socket.userId, receiverId].sort().join("-");
+    const roomId = roomId1;
     socket.join(roomId);
     console.log(`Utilisateur ${socket.userId} a rejoint la room : ${roomId}`);
   });

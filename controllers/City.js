@@ -1,4 +1,5 @@
 const City = require("../models/City"); 
+const Country = require("../models/Country")
 
 exports.addCity = (req, res) => {
   
@@ -12,6 +13,38 @@ exports.addCity = (req, res) => {
           
       }else{
         
+        
+          if(req.body.country_id === "autres"){
+            
+            const country = new Country({
+                name: req.body.country
+            }); 
+            
+            country.save().then((pays) => {
+              
+                const {_id} = pays; 
+                
+                const city = new City({
+                  name: req.body.name, 
+                  country: req.body.country, 
+                  code: req.body.code, 
+                  country_id: _id
+
+                  })
+
+                city.save().then(() => {
+
+                    res.status(201).json({status: 0});
+
+                }, (err) => {
+
+                    res.status(505).json({err})
+                })
+            })
+            
+          }else{
+            
+            
           const city = new City({
           name: req.body.name, 
           country: req.body.country, 
@@ -28,6 +61,10 @@ exports.addCity = (req, res) => {
 
             res.status(505).json({err})
         })
+            
+          }
+        
+
       }
       
     }, (err) => {

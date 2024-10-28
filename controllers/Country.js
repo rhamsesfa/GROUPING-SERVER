@@ -37,7 +37,7 @@ exports.getCountries = (req, res) => {
   
   //console.log(req.body);
   
-    Country.find().then((countries) => {
+    Country.find().sort({name: 1}).then((countries) => {
 
       //console.log(countries);
       

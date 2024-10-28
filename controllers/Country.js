@@ -37,7 +37,7 @@ exports.getCountries = (req, res) => {
   
   //console.log(req.body);
   
-    Country.find().sort({name: 1}).then((countries) => {
+    Country.find().sort({name: 1}).collation({ locale: "fr", strength: 1 }).then((countries) => {
 
       //console.log(countries);
       

@@ -101,6 +101,7 @@ io.on("connection", (socket) => {
           senderId: socket.userId,
           receiverId: savedMessage.user2Id,
           message: temporaryMessage,
+          user: user1
         });
       }
     } catch (error) {

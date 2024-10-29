@@ -153,7 +153,10 @@ exports.addMessageweb = async ({ senderId, receiverId, text }) => {
   });
 
   try {
+    // Étape 3 : Rechercher les utilisateurs correspondants
+    const users = await User.find({ _id: { $in: receiverId } });
     return await newMessage.save(); // Retourne le message sauvegardé
+    
   } catch (error) {
     console.error('Erreur lors de la sauvegarde du message :', error);
     throw error;

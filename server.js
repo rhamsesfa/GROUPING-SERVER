@@ -66,7 +66,7 @@ io.on("connection", (socket) => {
   });
 
   // Gestion de l'envoi de messages
-  socket.on("sendMessage", async ({ roomId1, receiverId, message }) => {
+  socket.on("sendMessage", async ({ roomId1, receiverId, message, user1 }) => {
     const roomId = roomId1;
     const receiverSocketId = connectedUsers.get(receiverId);
 

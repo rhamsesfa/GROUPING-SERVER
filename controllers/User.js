@@ -154,7 +154,7 @@ exports.signInWithGoogleAdmin = (req, res) => {
           req.body.typeconnexion === "admin" &&
           (!user.role || !allowedRoles.includes(user.role))
         ) {
-          return res.status(201).json({
+          return res.status(401).json({
             status: 0,
             message: "Accès non autorisé pour ce rôle.",
           });
@@ -173,7 +173,7 @@ exports.signInWithGoogleAdmin = (req, res) => {
       } else {
         // Si typeconnexion est "admin" et l'utilisateur n'existe pas
         if (req.body.typeconnexion === "admin") {
-          return res.status(201).json({
+          return res.status(401).json({
             status: 0,
             message: "Utilisateur non autorisé.",
           });

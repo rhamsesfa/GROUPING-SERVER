@@ -14,5 +14,6 @@ router.post("/signinwithgoogle", userCtrl.signInWithGoogle);
 router.post("/signinwithgoogleadmin", userCtrl.signInWithGoogleAdmin); 
 router.post("/appleinfo", userCtrl.appleInfo);
 router.post("/signin", userCtrl.signIn);
+router.post("/signinAdmin", userCtrl.signInAdmin);
 
 module.exports = router;

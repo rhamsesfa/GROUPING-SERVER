@@ -379,48 +379,68 @@ exports.signIn = (req, res) => {
 };
 
 exports.signInAdmin = (req, res) => {
-  User.findOne({ email: req.body.email }).then(
-    (user) => {
-      if (!user) {
-        res.status(200).json({
-          status: 1,
-          message: "Utilisateur et/ou mot de passe incorrect",
-        });
-      } else {
+  // Vérification du type de connexion
+  if (req.body.typeconnexion && req.body.typeconnexion === 'admin') {
+    User.findOne({ email: req.body.email }).then(
+      (user) => {
+        // Si l'utilisateur n'existe pas
+        if (!user) {
+          return res.status(401).json({
+            status: 1,
+            message: "Utilisateur non trouvé ou non autorisé.",
+          });
+        }
+
+        // Vérification du rôle de l'utilisateur
+        const allowedRoles = ['superUser', 'admin1', 'admin2'];
+        if (!user.role || !allowedRoles.includes(user.role)) {
+          return res.status(403).json({
+            status: 1,
+            message: "Accès non autorisé pour ce rôle.",
+          });
+        }
+
+        // Vérification du mot de passe
         bcrypt.compare(req.body.password, user.password).then(
           (valid) => {
             if (!valid) {
-              res.status(200).json({
+              return res.status(401).json({
                 status: 1,
                 message: "Utilisateur et/ou mot de passe incorrect",
               });
-            } else {
-              const _id = user._id;
-
-              delete user._id;
-
-              res.status(200).json({
-                status: 0,
-                user,
-                token: jwt.sign(
-                  { userId: _id },
-                  "JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb"
-                ),
-              });
             }
+
+            // Suppression de l'ID de l'utilisateur dans la réponse
+            const _id = user._id;
+            delete user._id;
+
+            // Réponse avec l'utilisateur et le token
+            return res.status(200).json({
+              status: 0,
+              user,
+              token: jwt.sign(
+                { userId: _id },
+                "JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb"
+              ),
+            });
           },
           (err) => {
-            console.log(err);
-            res.status(505).json({ err });
+            console.error(err);
+            return res.status(500).json({ err });
           }
         );
+      },
+      (err) => {
+        console.error(err);
+        return res.status(500).json({ err });
       }
-    },
-    (err) => {
-      console.log(err);
-      res.status(505).json({ err });
-    }
-  );
+    );
+  } else {
+    return res.status(400).json({
+      status: 1,
+      message: "Type de connexion invalide ou non défini.",
+    });
+  }
 };
 
 exports.appleInfo = (req, res) => {

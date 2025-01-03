@@ -378,6 +378,51 @@ exports.signIn = (req, res) => {
   );
 };
 
+exports.signInAdmin = (req, res) => {
+  User.findOne({ email: req.body.email }).then(
+    (user) => {
+      if (!user) {
+        res.status(200).json({
+          status: 1,
+          message: "Utilisateur et/ou mot de passe incorrect",
+        });
+      } else {
+        bcrypt.compare(req.body.password, user.password).then(
+          (valid) => {
+            if (!valid) {
+              res.status(200).json({
+                status: 1,
+                message: "Utilisateur et/ou mot de passe incorrect",
+              });
+            } else {
+              const _id = user._id;
+
+              delete user._id;
+
+              res.status(200).json({
+                status: 0,
+                user,
+                token: jwt.sign(
+                  { userId: _id },
+                  "JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb"
+                ),
+              });
+            }
+          },
+          (err) => {
+            console.log(err);
+            res.status(505).json({ err });
+          }
+        );
+      }
+    },
+    (err) => {
+      console.log(err);
+      res.status(505).json({ err });
+    }
+  );
+};
+
 exports.appleInfo = (req, res) => {
   console.log(req.body);
   res.status(201).json({ status: 0, message: "Thank You!" });

@@ -148,15 +148,15 @@ exports.signInWithGoogleAdmin = (req, res) => {
       // Si l'utilisateur existe
       if (user) {
         // Vérification du rôle dans l'objet utilisateur
-        const allowedRoles = ['superUser', 'admin1', 'admin2'];
+        const allowedRoles = ["superUser", "admin1", "admin2"];
 
         if (
-          req.body.typeconnexion === 'admin' &&
+          req.body.typeconnexion === "admin" &&
           (!user.role || !allowedRoles.includes(user.role))
         ) {
-          return res.status(401).json({
+          return res.status(201).json({
             status: 0,
-            message: "Accès non autorisé pour ce rôle.",
+            statusText: "Accès non autorisé pour ce rôle.",
           });
         }
 
@@ -172,7 +172,7 @@ exports.signInWithGoogleAdmin = (req, res) => {
         });
       } else {
         // Si typeconnexion est "admin" et l'utilisateur n'existe pas
-        if (req.body.typeconnexion === 'admin') {
+        if (req.body.typeconnexion === "admin") {
           return res.status(403).json({
             status: 0,
             message: "Utilisateur non autorisé.",

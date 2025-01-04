@@ -147,9 +147,11 @@ exports.signInWithGoogleAdmin = (req, res) => {
     (user) => {
       // Si l'utilisateur existe
       if (user) {
-        console.log(user)
+        //console.log(user)
         // Vérification du rôle dans l'objet utilisateur
         const allowedRoles = ["superUser", "admin1", "admin2"];
+        console.log("Role utilisateur :", user.role);
+        console.log("Rôles autorisés :", allowedRoles);
 
         if (
           req.body.typeconnexion === "admin" &&

@@ -446,6 +446,40 @@ exports.signInAdmin = (req, res) => {
   }
 };
 
+exports.getAllUsers = (req, res) => {
+  if (!req.user || !['superUser', 'admin1', 'admin2'].includes(req.user.role)) {
+    return res.status(403).json({
+      status: 1,
+      message: "Accès non autorisé",
+    });
+  }
+
+  User.find()
+    .lean() // Convertir les documents Mongoose en objets JavaScript simples
+    .then((users) => {
+      // Supprimer le champ password pour chaque utilisateur
+      const sanitizedUsers = users.map((user) => {
+        delete user.password; // Supprime la clé 'password'
+        return user;
+      });
+
+      res.status(200).json({
+        status: 0,
+        users: sanitizedUsers,
+        message: "Liste des utilisateurs récupérée avec succès",
+      });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({
+        status: 1,
+        message: "Erreur lors de la récupération des utilisateurs",
+        error: err,
+      });
+    });
+};
+
+
 exports.appleInfo = (req, res) => {
   console.log(req.body);
   res.status(201).json({ status: 0, message: "Thank You!" });

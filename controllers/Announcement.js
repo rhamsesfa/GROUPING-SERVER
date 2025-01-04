@@ -93,7 +93,6 @@ exports.addAnnouncementWithImages = (req, res) => {
 }
 
 
-
 exports.addAnnouncement = (req, res) => {
  
   if (req.body.status === "kilos") {
@@ -367,3 +366,30 @@ exports.annoncesRecherche = async (req, res) => {
   
     
 }
+
+//version admin
+
+exports.getValidAnnouncements = async (req, res) => {
+  try {
+    // Récupérer la date actuelle
+    const currentDate = new Date();
+
+    // Trouver toutes les annonces avec une date de départ valide
+    const validAnnouncements = await Announcement.find({
+      departureDate: { $gt: currentDate }, // Filtrer les annonces avec une date de départ future
+    });
+
+    res.status(200).json({
+      status: 0,
+      announcements: validAnnouncements,
+      message: "Annonces valides récupérées avec succès",
+    });
+  } catch (error) {
+    console.error("Erreur lors de la récupération des annonces valides :", error);
+    res.status(500).json({
+      status: 1,
+      message: "Erreur lors de la récupération des annonces valides",
+      error,
+    });
+  }
+};

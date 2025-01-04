@@ -16,6 +16,7 @@ router.post("/announces", announcementCtrl.getAnnonces);
 router.post("/moreannounces", auth, announcementCtrl.moreAnnouncements)
 router.post("/getannonce", announcementCtrl.getAnnonce)
 router.post("/search", announcementCtrl.annoncesRecherche)
+router.post("/search", announcementCtrl.getValidAnnouncements)
 
 module.exports = router; 
 

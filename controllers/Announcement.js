@@ -396,16 +396,19 @@ exports.getValidAnnouncements = async (req, res) => {
 
 exports.getFalseContainer = async (req, res) => {
   try {
-    // Récupérer les annonces avec status "container" et active à false
+    const currentDate = new Date(); // Date actuelle
+
+    // Récupérer les annonces avec status "container", active à false, et date de départ valide
     const inactiveContainers = await Announcement.find({
       status: "container",
       active: false,
+      dateOfDeparture: { $gt: currentDate }, // Vérifie que la date est future
     });
 
     res.status(200).json({
       status: 0,
       announcements: inactiveContainers,
-      message: "Annonces inactives 'container' récupérées avec succès",
+      message: "Annonces inactives 'container' avec des dates valides récupérées avec succès",
     });
   } catch (error) {
     console.error("Erreur lors de la récupération des annonces inactives :", error);
@@ -416,3 +419,4 @@ exports.getFalseContainer = async (req, res) => {
     });
   }
 };
+

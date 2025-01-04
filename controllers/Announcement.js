@@ -393,3 +393,26 @@ exports.getValidAnnouncements = async (req, res) => {
     });
   }
 };
+
+exports.getFalseContainer = async (req, res) => {
+  try {
+    // Récupérer les annonces avec status "container" et active à false
+    const inactiveContainers = await Announcement.find({
+      status: "container",
+      active: false,
+    });
+
+    res.status(200).json({
+      status: 0,
+      announcements: inactiveContainers,
+      message: "Annonces inactives 'container' récupérées avec succès",
+    });
+  } catch (error) {
+    console.error("Erreur lors de la récupération des annonces inactives :", error);
+    res.status(500).json({
+      status: 1,
+      message: "Erreur lors de la récupération des annonces inactives",
+      error,
+    });
+  }
+};

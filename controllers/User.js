@@ -447,7 +447,8 @@ exports.signInAdmin = (req, res) => {
 };
 
 exports.getAllUsers = (req, res) => {
-  if (!req.user || !['superUser', 'admin1', 'admin2'].includes(req.user.role)) {
+  console.log(req)
+  if (!req.body || !['superUser', 'admin1', 'admin2'].includes(req.body.role)) {
     return res.status(403).json({
       status: 1,
       message: "Accès non autorisé",

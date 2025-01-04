@@ -4,6 +4,7 @@ const router = express.Router();
 
 
 const userCtrl = require("../controllers/User"); 
+const auth = require("../middleware/auth"); 
 
 
 //router.get("/adduser", userCtrl.SignUp);
@@ -15,6 +16,6 @@ router.post("/signinwithgoogleadmin", userCtrl.signInWithGoogleAdmin);
 router.post("/appleinfo", userCtrl.appleInfo);
 router.post("/signin", userCtrl.signIn);
 router.post("/signinAdmin", userCtrl.signInAdmin);
-router.post("/getallusers", userCtrl.getAllUsers)
+router.post("/getallusers", auth, userCtrl.getAllUsers)
 
 module.exports = router;

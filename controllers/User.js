@@ -447,7 +447,7 @@ exports.signInAdmin = (req, res) => {
 };
 
 exports.getAllUsers = (req, res) => {
-  console.log(req)
+  console.log(req.body)
   if (!req.body || !['superUser', 'admin1', 'admin2'].includes(req.body.role)) {
     return res.status(403).json({
       status: 1,

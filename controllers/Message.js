@@ -160,3 +160,39 @@ exports.addMessageweb = async ({ senderId, receiverId, text }) => {
     throw error;
   }
 };
+
+//pour la version admin
+exports.getConversationCount = async (req, res) => {
+  try {
+    // Trouver toutes les conversations distinctes en utilisant une agrégation MongoDB
+    const conversationCount = await Message.aggregate([
+      {
+        $group: {
+          _id: {
+            user1: { $cond: [{ $lt: ["$user1Id", "$user2Id"] }, "$user1Id", "$user2Id"] },
+            user2: { $cond: [{ $lt: ["$user1Id", "$user2Id"] }, "$user2Id", "$user1Id"] },
+          },
+        },
+      },
+      {
+        $count: "totalConversations",
+      },
+    ]);
+
+    // Si aucune conversation n'est trouvée, renvoyer 0
+    const totalConversations = conversationCount[0]?.totalConversations || 0;
+
+    res.status(200).json({
+      status: 0,
+      count: totalConversations,
+      message: "Nombre de conversations calculé avec succès",
+    });
+  } catch (error) {
+    console.error("Erreur lors du calcul du nombre de conversations :", error);
+    res.status(500).json({
+      status: 1,
+      message: "Erreur lors du calcul du nombre de conversations",
+      error,
+    });
+  }
+};

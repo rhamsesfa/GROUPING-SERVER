@@ -8,4 +8,5 @@ const auth = require("../middleware/auth");
 router.post("/getmessages", auth, messageCtrl.getMessages);
 router.post("/getMessagesById", auth, messageCtrl.getMessagesById);
 router.post("/addmessage", auth, messageCtrl.addMessage);
+router.post("/getconversationcount", auth, messageCtrl.getConversationCount);
 module.exports = router;

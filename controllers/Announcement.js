@@ -376,7 +376,7 @@ exports.getValidAnnouncements = async (req, res) => {
 
     // Trouver toutes les annonces avec une date de départ valide
     const validAnnouncements = await Announcement.find({
-      departureDate: { $gt: currentDate }, // Filtrer les annonces avec une date de départ future
+      dateOfDeparture: { $gt: currentDate }, // Filtrer les annonces avec une date de départ future
     });
 
     res.status(200).json({

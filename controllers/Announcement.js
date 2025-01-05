@@ -426,7 +426,7 @@ exports.getFalseKilo = async (req, res) => {
 
     // Récupérer les annonces avec status "kilos", active à false, et date de départ valide
     const inactiveKilo = await Announcement.find({
-      status: "kilo",
+      status: "kilos",
       active: false,
       dateOfDeparture: { $gt: currentDate }, // Vérifie que la date est future
     });

@@ -18,6 +18,7 @@ router.post("/getannonce", announcementCtrl.getAnnonce)
 router.post("/search", announcementCtrl.annoncesRecherche)
 router.get("/getvalidannouncements", auth, announcementCtrl.getValidAnnouncements)
 router.get("/getfalsecontainer", auth, announcementCtrl.getFalseContainer)
+router.get("/getfalsekilo", auth, announcementCtrl.getFalseKilo)
 router.get("/getconversionrate", auth, announcementCtrl.getConversionRate)
 router.post("/updateactivecontainer", auth, announcementCtrl.toggleActiveStatus)
 

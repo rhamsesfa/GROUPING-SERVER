@@ -420,6 +420,33 @@ exports.getFalseContainer = async (req, res) => {
   }
 };
 
+exports.getFalseKilo = async (req, res) => {
+  try {
+    const currentDate = new Date(); // Date actuelle
+
+    // Récupérer les annonces avec status "kilos", active à false, et date de départ valide
+    const inactiveKilo = await Announcement.find({
+      status: "kilo",
+      active: false,
+      dateOfDeparture: { $gt: currentDate }, // Vérifie que la date est future
+    });
+
+    res.status(200).json({
+      status: 0,
+      announcements: inactiveKilo,
+      message: "Annonces inactives 'kilos' avec des dates valides récupérées avec succès",
+    });
+  } catch (error) {
+    console.error("Erreur lors de la récupération des annonces inactives :", error);
+    res.status(500).json({
+      status: 1,
+      message: "Erreur lors de la récupération des annonces inactives",
+      error,
+    });
+  }
+};
+
+
 exports.getConversionRate = async (req, res) => {
   try {
     // Récupérer le nombre total d'utilisateurs

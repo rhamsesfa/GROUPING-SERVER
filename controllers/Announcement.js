@@ -420,3 +420,34 @@ exports.getFalseContainer = async (req, res) => {
   }
 };
 
+exports.getConversionRate = async (req, res) => {
+  try {
+    // Récupérer le nombre total d'utilisateurs
+    const totalUsers = await User.countDocuments();
+
+    // Récupérer le nombre d'utilisateurs ayant posté au moins une annonce
+    const usersWithAnnouncements = await Announcement.distinct("userId");
+
+    // Calculer le taux de conversion
+    const conversionRate = totalUsers > 0 
+      ? ((usersWithAnnouncements.length / totalUsers) * 100).toFixed(2) 
+      : 0;
+
+    res.status(200).json({
+      status: 0,
+      conversionRate: `${conversionRate}%`,
+      totalUsers,
+      usersWithAnnouncements: usersWithAnnouncements.length,
+      message: "Taux de conversion calculé avec succès",
+    });
+  } catch (error) {
+    console.error("Erreur lors du calcul du taux de conversion :", error);
+    res.status(500).json({
+      status: 1,
+      message: "Erreur lors du calcul du taux de conversion",
+      error,
+    });
+  }
+};
+
+

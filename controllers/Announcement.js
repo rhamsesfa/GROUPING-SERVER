@@ -435,7 +435,7 @@ exports.getConversionRate = async (req, res) => {
 
     res.status(200).json({
       status: 0,
-      conversionRate: `${conversionRate}%`,
+      conversionRate: `${conversionRate}`,
       totalUsers,
       usersWithAnnouncements: usersWithAnnouncements.length,
       message: "Taux de conversion calculé avec succès",

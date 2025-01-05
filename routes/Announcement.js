@@ -19,7 +19,7 @@ router.post("/search", announcementCtrl.annoncesRecherche)
 router.get("/getvalidannouncements", auth, announcementCtrl.getValidAnnouncements)
 router.get("/getfalsecontainer", auth, announcementCtrl.getFalseContainer)
 router.get("/getconversionrate", auth, announcementCtrl.getConversionRate)
-router.get("/updateactivecontainer", auth, announcementCtrl.toggleActiveStatus)
+router.post("/updateactivecontainer", auth, announcementCtrl.toggleActiveStatus)
 
 module.exports = router; 
 

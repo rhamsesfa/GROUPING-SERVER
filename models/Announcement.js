@@ -18,7 +18,8 @@ const AnnouncementSchema = mongoose.Schema({
     date: {type: Date}, 
     active: {type: Boolean},
     priceKilo: {type: String, default: null},
-    coords: {type: Object, default: null}
+    coords: {type: Object, default: null},
+    locked: {type: Boolean, default: null}
     
 })
 

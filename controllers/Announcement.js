@@ -450,4 +450,61 @@ exports.getConversionRate = async (req, res) => {
   }
 };
 
+exports.toggleActiveStatus = async (req, res) => {
+  try {
+    const { id } = req.body;
+
+    // Vérifier si l'ID est fourni
+    if (!id) {
+      return res.status(400).json({
+        status: 1,
+        message: "L'identifiant de l'annonce est requis.",
+      });
+    }
+
+    // Utiliser `findByIdAndUpdate` pour réduire le nombre d'opérations
+    const announcement = await Announcement.findById(id);
+
+    // Vérifier si l'annonce existe
+    if (!announcement) {
+      return res.status(404).json({
+        status: 1,
+        message: "Annonce non trouvée.",
+      });
+    }
+
+    const update = {};
+    if (announcement.active) {
+      // Si active est true, on le passe à false et on ajoute locked
+      update.active = false;
+      update.locked = true;
+    } else {
+      // Si active est false, on le passe à true et on retire locked
+      update.active = true;
+      update.$unset = { locked: "" }; // Utiliser $unset pour supprimer `locked`
+    }
+
+    // Appliquer les modifications
+    const updatedAnnouncement = await Announcement.findByIdAndUpdate(
+      id,
+      update,
+      { new: true } // Retourner l'objet mis à jour
+    );
+
+    res.status(200).json({
+      status: 0,
+      message: "Statut 'active' mis à jour avec succès.",
+      announcement: updatedAnnouncement,
+    });
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour du statut 'active' :", error);
+    res.status(500).json({
+      status: 1,
+      message: "Erreur lors de la mise à jour du statut 'active'.",
+      error,
+    });
+  }
+};
+
+
 

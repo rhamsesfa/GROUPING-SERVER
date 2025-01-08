@@ -522,3 +522,25 @@ exports.toggleLockStatus = async (req, res) => {
     res.status(500).json({ message: "Erreur interne du serveur." });
   }
 };
+
+
+exports.connectWithApple = async (req, res) => {
+  
+      try{
+        
+         const user = await User.findOne({email: req.body.email}); 
+        
+          if(user){
+            
+              
+          }else{
+            
+              
+          }
+        
+      }catch(e){
+        
+          console.log(e); 
+          res.status(505).json({err: e})
+      }
+}

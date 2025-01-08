@@ -10,6 +10,7 @@ const userSchema = mongoose.Schema({
   photo: { type: String },
   role: { type: String, default: null }, // Attribut 'role' ajouté
   locked: { type: Boolean, default: false }, //propriété permettant de savoir si un user a été bloqué ou pas
+  appleId: {type: String}
 });
 
 module.exports = mongoose.model("User", userSchema);

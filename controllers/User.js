@@ -528,9 +528,16 @@ exports.connectWithApple = async (req, res) => {
   
       try{
         
-         const user = await User.findOne({email: req.body.email}); 
-        
-          if(user){
+        if(req.body.email){
+          
+            const user = await User.findOne({email: req.body.email}); 
+          
+             if(user){
+               
+               if(!user.appleId){
+                 
+                   await User.updateOne({_id: user._id}, {$set: {appleId: req.body.appleId}})
+               }
             
               res.status(200).json({
                 status: 0,
@@ -541,10 +548,27 @@ exports.connectWithApple = async (req, res) => {
                 ),
               });
               
-          }else{
-            
-              
-          }
+              }else{
+
+              const newUser = User({
+                email: req.body.email,
+                name: req.body.name,
+                appleId: req.body.appleId,
+                date: new Date(),
+              });
+
+
+
+              }
+          
+        }else{
+          
+          
+        }
+        
+       
+        
+         
         
       }catch(e){
         

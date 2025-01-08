@@ -486,7 +486,7 @@ exports.appleInfo = (req, res) => {
   res.status(201).json({ status: 0, message: "Thank You!" });
 };
 
-exports.toggleLockStatus = (req, res) => {
+exports.toggleLockStatus = async (req, res) => {
   const { userId } = req.params;
 
   if (!userId) {

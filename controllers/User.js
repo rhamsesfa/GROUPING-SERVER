@@ -532,7 +532,14 @@ exports.connectWithApple = async (req, res) => {
         
           if(user){
             
-            
+              res.status(200).json({
+                status: 0,
+                user,
+                token: jwt.sign(
+                  { userId: user._id },
+                  "JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb"
+                ),
+              });
               
           }else{
             

@@ -532,6 +532,7 @@ exports.connectWithApple = async (req, res) => {
         
           if(user){
             
+            
               
           }else{
             

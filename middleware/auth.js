@@ -22,7 +22,8 @@ module.exports = (req, res, next) => {
       (user) => {
         console.log("ici meme");
 
-        if (user) {
+        if (user && !user.locked) {
+          
           console.log("c'est ici");
 
           next();

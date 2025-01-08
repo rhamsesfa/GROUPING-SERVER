@@ -485,3 +485,4 @@ exports.appleInfo = (req, res) => {
   console.log(req.body);
   res.status(201).json({ status: 0, message: "Thank You!" });
 };
+

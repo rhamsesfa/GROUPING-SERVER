@@ -487,14 +487,14 @@ exports.appleInfo = (req, res) => {
 };
 
 exports.toggleLockStatus = async (req, res) => {
-  const { userId } = req.params;
+  const { id } = req.body;
 
-  if (!userId) {
+  if (!id) {
     return res.status(400).json({ message: "ID utilisateur manquant." });
   }
 
   try {
-    const user = await User.findById(userId);
+    const user = await User.findById(id);
 
     if (!user) {
       return res.status(404).json({ message: "Utilisateur introuvable." });
@@ -508,7 +508,7 @@ exports.toggleLockStatus = async (req, res) => {
     }
 
     const updatedUser = await User.findByIdAndUpdate(
-      userId,
+      id,
       { locked: user.locked },
       { new: true } // Retourne l'utilisateur mis à jour
     );

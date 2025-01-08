@@ -486,3 +486,39 @@ exports.appleInfo = (req, res) => {
   res.status(201).json({ status: 0, message: "Thank You!" });
 };
 
+exports.toggleLockStatus = (req, res) => {
+  const { userId } = req.params;
+
+  if (!userId) {
+    return res.status(400).json({ message: "ID utilisateur manquant." });
+  }
+
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "Utilisateur introuvable." });
+    }
+
+    // Vérification et mise à jour de la propriété 'locked'
+    if (typeof user.locked === "undefined") {
+      user.locked = true; // Ajout de la propriété si elle n'existe pas
+    } else {
+      user.locked = !user.locked; // Inversion de la valeur actuelle
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { locked: user.locked },
+      { new: true } // Retourne l'utilisateur mis à jour
+    );
+
+    res.status(200).json({
+      message: `Le statut 'locked' a été ${user.locked ? "activé" : "désactivé"}.`,
+      user: updatedUser,
+    });
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour du statut 'locked' :", error);
+    res.status(500).json({ message: "Erreur interne du serveur." });
+  }
+};

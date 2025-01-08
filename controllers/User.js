@@ -558,6 +558,7 @@ exports.connectWithApple = async (req, res) => {
               });
 
 
+                const _id = await newUser.save()._id;
 
               }
           

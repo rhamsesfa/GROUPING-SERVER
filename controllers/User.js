@@ -658,7 +658,7 @@ exports.addUser = async (req, res) => {
       });
     }
 
-    // Hash du mot de passe
+      // Hash du mot de passe
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Créer un nouvel utilisateur

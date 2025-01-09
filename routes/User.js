@@ -18,5 +18,6 @@ router.post("/signin", userCtrl.signIn);
 router.post("/signinAdmin", userCtrl.signInAdmin);
 router.post("/getallusers", auth, userCtrl.getAllUsers)
 router.post("/togglelockstatus", auth, userCtrl.toggleLockStatus)
+router.post("/addadmin", auth, userCtrl.addUser)
 
 module.exports = router;

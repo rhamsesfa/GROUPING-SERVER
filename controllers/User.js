@@ -393,6 +393,13 @@ exports.signInAdmin = (req, res) => {
             message: "Utilisateur non trouvé ou non autorisé.",
           });
         }
+        if(user.locked){
+          return res.status(401).json({
+            status: 1,
+            message: "Utilisateur bloqué.",
+          });
+          
+        }
 
         // Vérification du rôle de l'utilisateur
         const allowedRoles = ["superUser", "admin1", "admin2"];

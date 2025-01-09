@@ -221,7 +221,7 @@ exports.getAnnonces = async (req, res) => {
       active: true,
       status: "container",
       dateOfDeparture: { $gte: currentDate }
-    }).sort({ date: -1 }).limit(limit);
+    }).sort({ date: 1 }).limit(limit);
     
     //console.log("Containers found:", containers.length);
     

@@ -19,6 +19,7 @@ router.post("/signin", userCtrl.signIn);
 router.post("/signinAdmin", userCtrl.signInAdmin);
 router.post("/getallusers", auth, userCtrl.getAllUsers)
 router.post("/togglelockstatus", auth, userCtrl.toggleLockStatus)
-router.post("/addadmin", auth, multer2, userCtrl.addUser)
+router.post("/addadmin", auth, multer2, userCtrl.addUser); 
+router.post("/connectwithapple", userCtrl.connectWithApple);
 
 module.exports = router;

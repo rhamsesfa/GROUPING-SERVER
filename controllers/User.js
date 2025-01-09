@@ -610,6 +610,20 @@ exports.connectWithApple = async (req, res) => {
 
 exports.addUser = async (req, res) => {
   try {
+       // Vérification que req.files existe et est un tableau
+    if (!req.files || !Array.isArray(req.files)) {
+        return res.status(400).json({ error: 'Aucun fichier téléchargé' });
+    }
+  
+     // console.log(req.files); 
+      //console.log(req.body); 
+  
+      let draft = []; 
+  
+      for(let file of req.files){
+        
+          draft.push(`${req.protocol}s://${req.get("host")}/images/${file.filename}`)
+      }
     const { userId } = req.user; // ID de l'utilisateur qui ajoute
     const { email, name, password, role } = req.body;
     const photo = req.file?.path; // Chemin de la photo téléchargée
@@ -641,7 +655,7 @@ exports.addUser = async (req, res) => {
       name,
       password: hashedPassword,
       role: role || null,
-      photo: photo || null, // Ajout de la photo
+      draft, // Ajout de la photo
       date: new Date(),
       addUserId: userId, // ID de l'utilisateur qui a ajouté
     });

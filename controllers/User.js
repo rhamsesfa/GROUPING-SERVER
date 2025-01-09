@@ -592,22 +592,19 @@ exports.connectWithApple = async (req, res) => {
 
 exports.addUser = async (req, res) => {
   try {
-    // Vérification que req.files existe et est un tableau
-    if (!req.files || !Array.isArray(req.files)) {
-      // console.log(req.files);
-      //console.log(req.body);
+    let draft = [];
 
-      let draft = [];
-
+    // Traitement des fichiers s'ils existent
+    if (req.files && Array.isArray(req.files)) {
       for (let file of req.files) {
         draft.push(
-          `${req.protocol}s://${req.get("host")}/images/${file.filename}`
+          `${req.protocol}://${req.get("host")}/images/${file.filename}`
         );
       }
     }
+
     const userId = req.auth.userId; // ID de l'utilisateur qui ajoute
     const { email, name, password, role } = req.body;
-    const photo = req.file?.path; // Chemin de la photo téléchargée
 
     // Vérifier les droits
     const adminUser = await User.findById(userId);
@@ -639,7 +636,7 @@ exports.addUser = async (req, res) => {
       name,
       password: hashedPassword,
       role: role || null,
-      photo: draft[0] || null, // Ajout de la photo
+      photo: draft[0] || null, // Utilise la première photo si présente, sinon null
       date: new Date(),
       addUserId: userId, // ID de l'utilisateur qui a ajouté
     });

@@ -523,7 +523,6 @@ exports.toggleLockStatus = async (req, res) => {
   }
 };
 
-
 exports.connectWithApple = async (req, res) => {
   
       try{
@@ -607,4 +606,60 @@ exports.connectWithApple = async (req, res) => {
           console.log(e); 
           res.status(505).json({err: e})
       }
-}
+};
+
+exports.addUser = async (req, res) => {
+  try {
+    const { userId } = req.user; // ID de l'utilisateur qui ajoute
+    const { email, name, password, role } = req.body;
+    const photo = req.file?.path; // Chemin de la photo téléchargée
+
+    // Vérifier les droits
+    const adminUser = await User.findById(userId);
+    if (!adminUser || !["superUser", "admin1", "admin2"].includes(adminUser.role)) {
+      return res.status(403).json({
+        status: 1,
+        message: "Accès non autorisé.",
+      });
+    }
+
+    // Vérifier si l'email est déjà utilisé
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(409).json({
+        status: 1,
+        message: "Cet email est déjà utilisé.",
+      });
+    }
+
+    // Hash du mot de passe
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Créer un nouvel utilisateur
+    const newUser = new User({
+      email,
+      name,
+      password: hashedPassword,
+      role: role || null,
+      photo: photo || null, // Ajout de la photo
+      date: new Date(),
+      addUserId: userId, // ID de l'utilisateur qui a ajouté
+    });
+
+    // Sauvegarde dans la base de données
+    const savedUser = await newUser.save();
+
+    res.status(201).json({
+      status: 0,
+      message: "Utilisateur ajouté avec succès.",
+      user: savedUser,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      status: 1,
+      message: "Erreur serveur.",
+      error: err.message,
+    });
+  }
+};

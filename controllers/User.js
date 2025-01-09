@@ -558,13 +558,44 @@ exports.connectWithApple = async (req, res) => {
               });
 
 
-                const _id = await newUser.save()._id;
+                const _id = await newUser.save().then(async (uss) => {
+                return uss._id;
+              });
+
+              res.status(201).json({
+                status: 0,
+                message: "Utilisateur ajouté avec succès",
+                token: jwt.sign(
+                  { userId: _id },
+                  "JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb"
+                ),
+              });
 
               }
           
         }else{
           
+           const user = await User.findOne({appleId: req.body.appleId}); 
           
+            if(user){
+              
+              res.status(200).json({
+                status: 0,
+                user,
+                token: jwt.sign(
+                  { userId: user._id },
+                  "JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb"
+                ),
+              });
+                
+            }else{
+              
+               res.status(200)
+            .json({ status: 2, message: "Email ou mot de passe incorrect" });
+
+                
+            }
+            
         }
         
        

@@ -83,6 +83,13 @@ exports.signInWithGoogle = (req, res) => {
     (user) => {
       if (user) {
         //delete user._id
+        // Vérifier si l'utilisateur est bloqué
+        if (user.locked) {
+          return res.status(401).json({
+            status: 0,
+            message: "Utilisateur non autorisé, compte bloqué",
+          });
+        }
 
         res.status(201).json({
           status: 1,

@@ -535,12 +535,6 @@ exports.toggleActiveStatus = async (req, res) => {
 
 
 
-const Announcement = require("../models/Announcement");
-const City = require("../models/City");
-const User = require("../models/User");
-const mongoose = require("mongoose");
-const { ObjectId } = require("mongodb");
-
 exports.addAnnouncementWithPdf = (req, res) => {
   const draft = [
     `${req.protocol}s://${req.get("host")}/pdf_documents/${req.file.filename}`,

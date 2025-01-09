@@ -147,7 +147,7 @@ exports.signInWithGoogleAdmin = (req, res) => {
     (user) => {
       // Si l'utilisateur existe
       if (user) {
-        console.log(user)
+        console.log(user);
         // Vérification du rôle dans l'objet utilisateur
         const allowedRoles = ["superUser", "admin1", "admin2"];
         console.log("Role utilisateur :", user.role);
@@ -383,7 +383,7 @@ exports.signIn = (req, res) => {
 
 exports.signInAdmin = (req, res) => {
   // Vérification du type de connexion
-  if (req.body.typeconnexion && req.body.typeconnexion === 'admin') {
+  if (req.body.typeconnexion && req.body.typeconnexion === "admin") {
     User.findOne({ email: req.body.email }).then(
       (user) => {
         // Si l'utilisateur n'existe pas
@@ -395,7 +395,7 @@ exports.signInAdmin = (req, res) => {
         }
 
         // Vérification du rôle de l'utilisateur
-        const allowedRoles = ['superUser', 'admin1', 'admin2'];
+        const allowedRoles = ["superUser", "admin1", "admin2"];
         if (!user.role || !allowedRoles.includes(user.role)) {
           return res.status(403).json({
             status: 1,
@@ -447,8 +447,8 @@ exports.signInAdmin = (req, res) => {
 };
 
 exports.getAllUsers = (req, res) => {
-  console.log(req.body)
-  if (!req.body || !['superUser', 'admin1', 'admin2'].includes(req.body.role)) {
+  console.log(req.body);
+  if (!req.body || !["superUser", "admin1", "admin2"].includes(req.body.role)) {
     return res.status(403).json({
       status: 1,
       message: "Accès non autorisé",
@@ -479,7 +479,6 @@ exports.getAllUsers = (req, res) => {
       });
     });
 };
-
 
 exports.appleInfo = (req, res) => {
   console.log(req.body);
@@ -514,7 +513,9 @@ exports.toggleLockStatus = async (req, res) => {
     );
 
     res.status(200).json({
-      message: `Le statut 'locked' a été ${user.locked ? "activé" : "désactivé"}.`,
+      message: `Le statut 'locked' a été ${
+        user.locked ? "activé" : "désactivé"
+      }.`,
       user: updatedUser,
     });
   } catch (error) {
@@ -524,113 +525,96 @@ exports.toggleLockStatus = async (req, res) => {
 };
 
 exports.connectWithApple = async (req, res) => {
-  
-      try{
-        
-        if(req.body.email){
-          
-            const user = await User.findOne({email: req.body.email}); 
-          
-             if(user){
-               
-               if(!user.appleId){
-                 
-                   await User.updateOne({_id: user._id}, {$set: {appleId: req.body.appleId}})
-               }
-            
-              res.status(200).json({
-                status: 0,
-                user,
-                token: jwt.sign(
-                  { userId: user._id },
-                  "JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb"
-                ),
-              });
-              
-              }else{
+  try {
+    if (req.body.email) {
+      const user = await User.findOne({ email: req.body.email });
 
-              const newUser = User({
-                email: req.body.email,
-                name: req.body.name,
-                appleId: req.body.appleId,
-                date: new Date(),
-              });
-
-
-                const _id = await newUser.save().then(async (uss) => {
-                return uss._id;
-              });
-
-              res.status(201).json({
-                status: 0,
-                message: "Utilisateur ajouté avec succès",
-                token: jwt.sign(
-                  { userId: _id },
-                  "JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb"
-                ),
-              });
-
-              }
-          
-        }else{
-          
-           const user = await User.findOne({appleId: req.body.appleId}); 
-          
-            if(user){
-              
-              res.status(200).json({
-                status: 0,
-                user,
-                token: jwt.sign(
-                  { userId: user._id },
-                  "JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb"
-                ),
-              });
-                
-            }else{
-              
-               res.status(200)
-            .json({ status: 2, message: "Email ou mot de passe incorrect" });
-
-                
-            }
-            
+      if (user) {
+        if (!user.appleId) {
+          await User.updateOne(
+            { _id: user._id },
+            { $set: { appleId: req.body.appleId } }
+          );
         }
-        
-       
-        
-         
-        
-      }catch(e){
-        
-          console.log(e); 
-          res.status(505).json({err: e})
+
+        res.status(200).json({
+          status: 0,
+          user,
+          token: jwt.sign(
+            { userId: user._id },
+            "JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb"
+          ),
+        });
+      } else {
+        const newUser = User({
+          email: req.body.email,
+          name: req.body.name,
+          appleId: req.body.appleId,
+          date: new Date(),
+        });
+
+        const _id = await newUser.save().then(async (uss) => {
+          return uss._id;
+        });
+
+        res.status(201).json({
+          status: 0,
+          message: "Utilisateur ajouté avec succès",
+          token: jwt.sign(
+            { userId: _id },
+            "JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb"
+          ),
+        });
       }
+    } else {
+      const user = await User.findOne({ appleId: req.body.appleId });
+
+      if (user) {
+        res.status(200).json({
+          status: 0,
+          user,
+          token: jwt.sign(
+            { userId: user._id },
+            "JxqKuulLNPCNfytiyqtsygygfRJYTjgkbhilaebAqetflqRfhhouhpb"
+          ),
+        });
+      } else {
+        res
+          .status(200)
+          .json({ status: 2, message: "Email ou mot de passe incorrect" });
+      }
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(505).json({ err: e });
+  }
 };
 
 exports.addUser = async (req, res) => {
   try {
-       // Vérification que req.files existe et est un tableau
+    // Vérification que req.files existe et est un tableau
     if (!req.files || !Array.isArray(req.files)) {
-        return res.status(400).json({ error: 'Aucun fichier téléchargé' });
-    }
-  
-     // console.log(req.files); 
-      //console.log(req.body); 
-  
-      let draft = []; 
-  
-      for(let file of req.files){
-        
-          draft.push(`${req.protocol}s://${req.get("host")}/images/${file.filename}`)
+      // console.log(req.files);
+      //console.log(req.body);
+
+      let draft = [];
+
+      for (let file of req.files) {
+        draft.push(
+          `${req.protocol}s://${req.get("host")}/images/${file.filename}`
+        );
       }
-    const { userId } = req.user; // ID de l'utilisateur qui ajoute
+    }
+    const userId = req.auth.userId; // ID de l'utilisateur qui ajoute
     const { email, name, password, role } = req.body;
     const photo = req.file?.path; // Chemin de la photo téléchargée
 
     // Vérifier les droits
     const adminUser = await User.findById(userId);
-    if (!adminUser || !["superUser", "admin1", "admin2"].includes(adminUser.role)) {
+    if (
+      !adminUser ||
+      !["superUser", "admin1", "admin2"].includes(adminUser.role)
+    ) {
       return res.status(403).json({
         status: 1,
         message: "Accès non autorisé.",
@@ -655,7 +639,7 @@ exports.addUser = async (req, res) => {
       name,
       password: hashedPassword,
       role: role || null,
-      draft, // Ajout de la photo
+      photo: draft[0] || null, // Ajout de la photo
       date: new Date(),
       addUserId: userId, // ID de l'utilisateur qui a ajouté
     });

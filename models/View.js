@@ -6,3 +6,6 @@ const viewSchema = mongoose.Schema({
     date: {type: Date}
     
 })
+
+
+module.exports = mongoose.model("View", viewSchema);

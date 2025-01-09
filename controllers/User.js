@@ -162,6 +162,14 @@ exports.signInWithGoogleAdmin = (req, res) => {
             message: "Accès non autorisé pour ce rôle.",
           });
         }
+        
+        // Vérifier si l'utilisateur est bloqué
+        if (user.locked) {
+          return res.status(401).json({
+            status: 0,
+            message: "Utilisateur non autorisé, compte bloqué",
+          });
+        }
 
         // Si le rôle est valide ou si typeconnexion n'est pas "admin"
         res.status(201).json({
@@ -344,7 +352,16 @@ exports.signIn = (req, res) => {
           status: 1,
           message: "Utilisateur et/ou mot de passe incorrect",
         });
-      } else {
+      }
+      else {
+        
+        // Vérifier si l'utilisateur est bloqué
+        if (user.locked) {
+          return res.status(200).json({
+            status: 1,
+            message: "Utilisateur non autorisé, compte bloqué",
+          });
+        }
         bcrypt.compare(req.body.password, user.password).then(
           (valid) => {
             if (!valid) {

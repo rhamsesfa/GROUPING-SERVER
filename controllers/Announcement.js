@@ -290,9 +290,18 @@ exports.getAnnoncee = async (req, res) => {
             
            await  newView.save(); 
             
-          await annonce.updateOne({_id: req.body.id}, {$set: {views: annonce.views ? parseInt(annonce.views) + 1 : 1 }})
+            Announcement.updateOne({_id: req.body.id}, {$set: {views: annonce.views ? parseInt(annonce.views) + 1 : 1 }}).then(() => {
+             
+             console.log("Tout s'est bien passé");
+                 
+           }, (err) => {
+             
+               console.log(err)
+           })
+          
+          
       
-            annonce.views = annonce.views ? annonce.views + 1 : 1;
+          annonce.views = annonce.views ? annonce.views + 1 : 1;
           console.log("On a fait notre taff");
         }
       

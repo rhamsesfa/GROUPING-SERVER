@@ -22,6 +22,23 @@ exports.avoirLesAnnonces = async (req, res) => {
       .limit(10); 
       
       
+       const cityNames = [
+      ...new Set([...annonces.map(c => c.startCity), ...annonces.map(c => c.endCity),])
+    ];
+    
+    const cities = await City.find({ name: { $in: cityNames } });
+    const cityMap = new Map(cities.map(city => [city.name, city]));
+
+    // Ajouter les informations de ville aux conteneurs et kilos
+    annonces.forEach(annonce => {
+      annonce.startCity2 = cityMap.get(annonce.startCity);
+      annonce.endCity2 = cityMap.get(annonce.endCity);
+    });
+    
+  
+    res.status(200).json({status: 0, annonces,  })
+      
+      
       
     }catch(err){
       

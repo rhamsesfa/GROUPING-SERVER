@@ -277,10 +277,20 @@ exports.getAnnonce = async (req, res) => {
           
         }else{
           
-            const 
+            const newView = new View({
+              
+                anouncementId: req.body.id, 
+                userId: req.auth.userId, 
+                date: new Date()
+            })
+            
+           await  newView.save(); 
         }
       
         const annonce = await Announcement.findOne({_id: req.body.id}); 
+        await annonce.updateOne({_id: req.body.id}, {$set: {views: annonce.views ? parseInt(annonce.views) + 1 : 1 }})
+      
+        
       
         annonce.startCity2 = await City.findOne({name: annonce.startCity}); 
         annonce.endCity2 = await City.findOne({name: annonce.endCity})

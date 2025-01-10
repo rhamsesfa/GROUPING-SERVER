@@ -15,6 +15,7 @@ router.get("/getannouncementbyid", auth, announcementCtrl.getAnnouncementsById);
 router.post("/announces", announcementCtrl.getAnnonces);
 router.post("/moreannounces", auth, announcementCtrl.moreAnnouncements)
 router.post("/getannonce", announcementCtrl.getAnnonce)
+router.post("/getannoncee", announcementCtrl.getAnnoncee)
 router.post("/search", announcementCtrl.annoncesRecherche)
 router.get("/getvalidannouncements", auth, announcementCtrl.getValidAnnouncements)
 router.get("/getfalsecontainer", auth, announcementCtrl.getFalseContainer)

@@ -265,10 +265,12 @@ exports.getAnnonces = async (req, res) => {
 };
 
 
-exports.getAnnonce = async (req, res) => {
+exports.getAnnoncee = async (req, res) => {
   
     try{
         //console.log(req.body)
+      
+      console.log("On se comprend");
       
         const view = await View.findOne({anouncementId: req.body.id, userId: req.auth.userId,}); 
       
@@ -290,7 +292,7 @@ exports.getAnnonce = async (req, res) => {
         const annonce = await Announcement.findOne({_id: req.body.id}); 
         await annonce.updateOne({_id: req.body.id}, {$set: {views: annonce.views ? parseInt(annonce.views) + 1 : 1 }})
       
-        annonce.views += 1;
+        annonce.views = annonce.views ? annonce.views + 1 : 1;
       
         annonce.startCity2 = await City.findOne({name: annonce.startCity}); 
         annonce.endCity2 = await City.findOne({name: annonce.endCity})

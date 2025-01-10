@@ -274,23 +274,23 @@ exports.getAnnoncee = async (req, res) => {
       
         const annonce = await Announcement.findOne({_id: req.body.id}); 
       
-   
+     console.log(req.body.phoneId);
           
-      const view = await View.findOne({anouncementId: req.body.id, phoneId: req.body.phoneId}); 
+      const view = await View.findOne({announcementId: req.body.id, phoneId: req.body.phoneId}); 
       
         if(!view){
           
           
             const newView = new View({
               
-                anouncementId: req.body.id, 
-                userId: req.auth.userId, 
+                announcementId: req.body.id, 
+                phoneId: req.body.phoneId, 
                 date: new Date()
             })
             
            await  newView.save(); 
             
-            await annonce.updateOne({_id: req.body.id}, {$set: {views: annonce.views ? parseInt(annonce.views) + 1 : 1 }})
+          await annonce.updateOne({_id: req.body.id}, {$set: {views: annonce.views ? parseInt(annonce.views) + 1 : 1 }})
       
             annonce.views = annonce.views ? annonce.views + 1 : 1;
           console.log("On a fait notre taff");

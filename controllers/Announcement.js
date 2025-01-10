@@ -274,14 +274,12 @@ exports.getAnnoncee = async (req, res) => {
       
         const annonce = await Announcement.findOne({_id: req.body.id}); 
       
-        if(req.auth){
+   
           
-          const view = await View.findOne({anouncementId: req.body.id, userId: req.auth.userId,}); 
+      const view = await View.findOne({anouncementId: req.body.id, phoneId: req.body.phoneId}); 
       
-        if(view){
+        if(!view){
           
-          
-        }else{
           
             const newView = new View({
               
@@ -299,7 +297,7 @@ exports.getAnnoncee = async (req, res) => {
         }
       
             
-        }
+        
       
        
     

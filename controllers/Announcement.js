@@ -272,7 +272,11 @@ exports.getAnnoncee = async (req, res) => {
       
       console.log("On se comprend");
       
-        const view = await View.findOne({anouncementId: req.body.id, userId: req.auth.userId,}); 
+        const annonce = await Announcement.findOne({_id: req.body.id}); 
+      
+        if(req.auth){
+          
+          const view = await View.findOne({anouncementId: req.body.id, userId: req.auth.userId,}); 
       
         if(view){
           
@@ -287,12 +291,19 @@ exports.getAnnoncee = async (req, res) => {
             })
             
            await  newView.save(); 
+            
+            await annonce.updateOne({_id: req.body.id}, {$set: {views: annonce.views ? parseInt(annonce.views) + 1 : 1 }})
+      
+            annonce.views = annonce.views ? annonce.views + 1 : 1;
+          console.log("On a fait notre taff");
         }
       
-        const annonce = await Announcement.findOne({_id: req.body.id}); 
-        await annonce.updateOne({_id: req.body.id}, {$set: {views: annonce.views ? parseInt(annonce.views) + 1 : 1 }})
+            
+        }
       
-        annonce.views = annonce.views ? annonce.views + 1 : 1;
+       
+    
+
       
         annonce.startCity2 = await City.findOne({name: annonce.startCity}); 
         annonce.endCity2 = await City.findOne({name: annonce.endCity})

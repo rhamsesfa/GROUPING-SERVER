@@ -18,7 +18,7 @@ exports.avoirLesAnnonces = async (req, res) => {
          dateOfDeparture: {$gte: new Date()}
       })
       .sort({date: -1})
-      .startAt(startAt)
+      .skip(startAt)
       .limit(10); 
       
       
@@ -36,7 +36,7 @@ exports.avoirLesAnnonces = async (req, res) => {
     });
     
   
-    res.status(200).json({status: 0, annonces, startAt: annonces.length === 10 ?  })
+    res.status(200).json({status: 0, annonces, startAt: annonces.length === 10 ? parseInt(req.body.startAt) + 10 : null});
       
       
       

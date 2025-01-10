@@ -11,6 +11,12 @@ exports.avoirLesAnnonces = async (req, res) => {
     const startAt = req.body.startAt ? req.body.startAt : 0;
   
     try{
+      
+      const pipeline = [
+        {
+          
+        }
+      ]
         
       const annonces = await Announcement.find({
          active: true,  

@@ -6,7 +6,7 @@ const { ObjectId } = require('mongodb');
 const View = require("../models/View"); 
 
 
-
+/*
 exports.addAnnouncementWithPdf = (req, res) => {
   
  
@@ -137,7 +137,7 @@ exports.addAnnouncement = (req, res) => {
     console.log(req.body);
     console.log(req.file);
   }
-};
+}; */
 
 
 exports.getAnnouncementsById = async (req, res) => {
@@ -337,7 +337,7 @@ exports.getAnnoncee = async (req, res) => {
 
 }
 
-function monthNameToNumber(monthName) {
+/*function monthNameToNumber(monthName) {
   const monthNames = [
     'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
     'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'
@@ -347,7 +347,7 @@ function monthNameToNumber(monthName) {
   return monthIndex >= 0 ? monthIndex + 1 : null;
 }
 
-
+*/
 
 exports.annoncesRecherche = async (req, res) => {
   
@@ -800,8 +800,8 @@ exports.getAnnonces = async (req, res) => {
       status: "container",
       dateOfDeparture: { $gte: currentDate },
     })
-      .sort({ date: 1 })
-    //  .limit(limit);
+      .sort({ date: -1 })
+      .limit(limit);
 
     console.log("Containers found:", containers);
 

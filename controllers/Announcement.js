@@ -6,6 +6,28 @@ const { ObjectId } = require('mongodb');
 const View = require("../models/View"); 
 
 
+exports.avoirLesAnnonces = (req, res) => {
+    
+    const startAt = req.body.startAt ? req.body.startAt : 0;
+  
+    try{
+        
+      const annonces = Announcement.find({
+         active: true,  
+         status: req.body.status === "c" ? "container" : "kilos"
+         dateOfDeparture: {$gte: new Date()}
+      })
+      .sort({date: -1})
+      .startAt(startAt)
+      .limit(10)
+      
+    }catch(err){
+      
+        console.log(err); 
+        res.status(505).json({err})
+    }
+}
+
 /*
 exports.addAnnouncementWithPdf = (req, res) => {
   

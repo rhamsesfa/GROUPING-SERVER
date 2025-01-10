@@ -147,6 +147,9 @@ exports.getAnnouncementsById = async (req, res) => {
   
   try {
     
+    
+  
+    
     const containers = await Announcement.find({userId: req.auth.userId, active: true, status: "container"}).sort({date: -1}).limit(6); 
     const kilos = await Announcement.find({userId: req.auth.userId, active: true, status: "kilos"}).sort({date: -1}).limit(6); 
     
@@ -266,6 +269,16 @@ exports.getAnnonce = async (req, res) => {
   
     try{
         //console.log(req.body)
+      
+        const view = await View.findOne({anouncementId: req.body.id, userId: req.auth.userId,}); 
+      
+        if(view){
+          
+          
+        }else{
+          
+            const 
+        }
       
         const annonce = await Announcement.findOne({_id: req.body.id}); 
       

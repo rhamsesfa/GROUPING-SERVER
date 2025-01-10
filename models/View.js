@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const viewSchema = mongoose.Schema({
     
     userId: {type: String}, 
-    date: {type: Date}
+    date: {type: Date}, 
+    announcementId: {type: String}
     
 })
 

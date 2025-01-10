@@ -786,6 +786,8 @@ exports.moreAnnouncements = async (req, res) => {
 };
 
 exports.getAnnonces = async (req, res) => {
+  
+  
   try {
     const currentDate = new Date();
     const limit = req.body.three ? 3 : 60;
@@ -798,8 +800,8 @@ exports.getAnnonces = async (req, res) => {
       status: "container",
       dateOfDeparture: { $gte: currentDate },
     })
-      .sort({ date: -1 })
-      .limit(limit);
+      .sort({ date: 1 })
+    //  .limit(limit);
 
     console.log("Containers found:", containers);
 

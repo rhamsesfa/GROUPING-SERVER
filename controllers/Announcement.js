@@ -14,7 +14,11 @@ exports.avoirLesAnnonces = async (req, res) => {
       
       const pipeline = [
         {
-          
+          $match: {
+             active: true,  
+             status: req.body.status === "c" ? "container" : "kilos",
+             dateOfDeparture: {$gte: new Date()}
+          }
         }
       ]
         

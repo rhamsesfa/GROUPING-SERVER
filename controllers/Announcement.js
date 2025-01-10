@@ -3,6 +3,8 @@ const City = require("../models/City");
 const User = require("../models/User")
 const mongoose = require('mongoose');
 const { ObjectId } = require('mongodb');
+const View = require("../models/View"); 
+
 
 
 exports.addAnnouncementWithPdf = (req, res) => {

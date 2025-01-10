@@ -215,7 +215,7 @@ exports.moreAnnouncements = async (req, res) => {
     }
 }
 
-exports.getAnnonces = async (req, res) => {
+exports.getAnnoncess = async (req, res) => {
   try {
     const currentDate = new Date(); 
     const limit = req.body.three ? 3 : 60;
@@ -789,7 +789,8 @@ exports.getAnnonces = async (req, res) => {
   try {
     const currentDate = new Date();
     const limit = req.body.three ? 3 : 60;
-    //console.log("Current Date:", currentDate);
+    console.log("Current Date:", currentDate );
+    console.log("limit", limit)
 
     // Récupérer les annonces de conteneurs et de kilos
     const containers = await Announcement.find({
@@ -800,7 +801,7 @@ exports.getAnnonces = async (req, res) => {
       .sort({ date: -1 })
       .limit(limit);
 
-    //console.log("Containers found:", containers.length);
+    console.log("Containers found:", containers);
 
     const kilos = await Announcement.find({
       active: true,

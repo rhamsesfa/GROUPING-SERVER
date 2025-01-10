@@ -12,24 +12,29 @@ exports.avoirLesAnnonces = async (req, res) => {
   
     try{
       
-      const pipeline = [
-        {
-          $match: {
-             active: true,  
-             status: req.body.status === "c" ? "container" : "kilos",
-             dateOfDeparture: {$gte: new Date()}
-          }
-        }
+      const { status } = req.body;
+      const filter = {
+        active: true,
+        status: status === "c" ? "container" : "kilos",
+        dateOfDeparture: { $gte: new Date() }
+      };
+      
+      const result = await Announcement.aggregate([
+  { $match: filter }, // Appliquer les filtres
+  {
+    $facet: {
+      total: [{ $count: "count" }], // Compter les documents correspondants
+      annonces: [
+        { $sort: { date: -1 } },
+        { $skip: startAt },
+        { $limit: 10 }
       ]
-        
-      const annonces = await Announcement.find({
-         active: true,  
-         status: req.body.status === "c" ? "container" : "kilos",
-         dateOfDeparture: {$gte: new Date()}
-      })
-      .sort({date: -1})
-      .skip(startAt)
-      .limit(10); 
+    }
+  }
+]);
+
+const total = result[0]?.total[0]?.count || 0;
+const annonces = result[0]?.annonces || [];
       
       
        const cityNames = [
@@ -46,7 +51,7 @@ exports.avoirLesAnnonces = async (req, res) => {
     });
     
   
-    res.status(200).json({status: 0, annonces, startAt: annonces.length === 10 ? parseInt(req.body.startAt) + 10 : null});
+    res.status(200).json({status: 0, annonces, total, startAt: annonces.length === 10 ? parseInt(req.body.startAt) + 10 : null});
       
       
       

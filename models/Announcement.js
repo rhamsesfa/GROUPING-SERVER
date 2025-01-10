@@ -19,7 +19,8 @@ const AnnouncementSchema = mongoose.Schema({
     active: {type: Boolean},
     priceKilo: {type: String, default: null},
     coords: {type: Object, default: null},
-    locked: {type: Boolean, default: null}
+    locked: {type: Boolean, default: null}, 
+    views: {type: Number}
     
 })
 

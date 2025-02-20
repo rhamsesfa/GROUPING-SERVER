@@ -20,31 +20,30 @@ app.use((req, res, next) => {
     next();
 });
 
-mongoose.connect("mongodb+srv://fideleNdzime:K5kTxlDbjQl8k7yt@cluster0.rb7vp80.mongodb.net/grouping?retryWrites=true&w=majority",
-
+mongoose.connect("mongodb://localhost:27017/gaz?retryWrites=true&w=majority",
   { useNewUrlParser: true,
     useUnifiedTopology: true, autoIndex: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
-  .catch((err) => console.log('Connexion à MongoDB échouée !', err));
+  .catch((err) => console.log('Connexion à MongoDB échouée !', err)
+);
 
 
-const cityRouter = require("./routes/City");
+
 const userRouter = require("./routes/User");
-const countryRouter = require("./routes/Country"); 
-const announcementRouter = require("./routes/Announcement"); 
-const messageRouter = require("./routes/Message");
-const notificationRouter = require("./routes/Notification");
-const searchRouter = require("./routes/Search");
+const livraisonRoutes = require('./routes/livraisonRoutes');
+const bouteilleRoutes = require('./routes/bouteilleRoutes');
+const camionRoutes = require('./routes/camionRoutes');
+const chauffeurRoutes = require('./routes/chauffeurRoutes');
+
+// Routes
+app.use('/api/livraisons', livraisonRoutes);
+app.use('/api/bouteilles', bouteilleRoutes);
+app.use('/api/camions', camionRoutes);
+app.use('/api/chauffeurs', chauffeurRoutes);
 
 
-app.use("/api/country", countryRouter)
-app.use("/api/city", cityRouter); 
 app.use("/api/user", userRouter);
 app.use('/pdf_documents', express.static(path.join(__dirname, 'pdf_documents')));
 app.use("/images", express.static(path.join(__dirname, "images")));
-app.use("/api/annonce", announcementRouter);
-app.use("/api/message", messageRouter); 
-app.use("/api/notification", notificationRouter);
-app.use("/api/search", searchRouter);
 
 module.exports = app;
